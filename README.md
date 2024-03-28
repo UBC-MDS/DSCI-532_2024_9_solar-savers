@@ -19,4 +19,4 @@ Solar Savers is developed and maintained by Marco Bravo, Nicole Bidwell, Rafe Ch
 ### &blacktriangleright; Data Sources 
 
 - [Photovoltaic Potential and Solar Resource Maps of Canada](https://open.canada.ca/data/en/dataset/8b434ac7-aedb-4698-90df-ba77424a551f/resource/b4b8ede1-512c-4e6f-92af-d0ff38cf4de5) - primary data source used to extract the average daily global insolation across different regions in Canada.  
-- \<ADD IN LINK FOR SECOND DATASET\>
+- [Electricity Prices in Canada 2023](https://www.energyhub.org/electricity-prices/#) - primary data source to extract the price of electricity of every province in Canada.
