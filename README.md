@@ -12,7 +12,7 @@ Interested in contributing to this project? Check out the [contributing guidelin
 
 ## License
 
-Solar Savers is developed and maintained by Marco Bravo, Nicole Bidwell, Rafe Chang, and Sam Fo. The code is licensed under the MIT license. Please see `LICENSE.md` for details.  
+Solar Savers is developed and maintained by Marco Bravo, Nicole Bidwell, Rafe Chang, and Sam Fo. The code is licensed under the MIT License, Open Canada License, and Creative Commons License. Please see `LICENSE.md` for details.  
 
 ## Additional Credits
 
