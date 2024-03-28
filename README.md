@@ -8,11 +8,15 @@ With escalating inflation and growing environmental consciousness, consumers acr
 
 ## Contributing
 
-Interested in contributing to this project? Check out the contributing guidelines. Please note: this project follows a Code of Conduct. By contributing to this project, you agree to abide by the terms in the Code of Conduct.
+Interested in contributing to this project? Check out the [contributing guidelines](CONTRIBUTING.md). *Please note: This project is released with a Code of Conduct. By contributing to this project, you agree to abide by the terms in the [Code of Conduct](CODE_OF_CONDUCT.md).* 
 
 ## License
 
 Solar Savers is developed and maintained by Marco Bravo, Nicole Bidwell, Rafe Chang, and Sam Fo. The code is licensed under the MIT license. Please see `LICENSE.md` for details.  
 
-## Credits 
+## Additional Credits
 
+### &blacktriangleright; Data Sources 
+
+- [Photovoltaic Potential and Solar Resource Maps of Canada](https://open.canada.ca/data/en/dataset/8b434ac7-aedb-4698-90df-ba77424a551f/resource/b4b8ede1-512c-4e6f-92af-d0ff38cf4de5) - primary data source used to extract the average daily global insolation across different regions in Canada.  
+- \<ADD IN LINK FOR SECOND DATASET\>
