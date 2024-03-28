@@ -6,28 +6,28 @@ Read on if you want to learn about how our team contributes to our project's dev
 
 ## Internal Contributions
 
-Our team follows the [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow). This includes creating new branches to work on changes. When the changes are ready a pull request (PR) is made, accompanied by linked issues to facilitate discussion and review. After approval, the changes are merged to incorporate the new feature or fix to our project. Branches no longer in use are deleted to maintain a tidy repository.
+Our team follows the [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow). This includes creating new branches to work on changes. When the changes are ready a pull request is made, accompanied by linked issues to facilitate discussion and review. After approval, the changes are merged to incorporate the new feature or fix to our project. Branches no longer in use are deleted to maintain a tidy repository.
 
 ## External Contributions
 
 Here are the different types of contributions you can make!
 
-### Report Bugs
+### &blacktriangleright; Report Bugs
 
 If you are reporting a bug, please open an [issue](https://github.com/UBC-MDS/DSCI-532_2024_9_solar-savers/issues) and include:
 
 * A clear, yet concise, description of the bug, indicating details that would be helpful in troubleshooting.
 * Detailed steps to reproduce the bug.
 
-### Fix Bugs
+### &blacktriangleright; Fix Bugs
 
 Look through the GitHub issues for bugs. Anything tagged with "bug" and "help wanted" is open to whoever wants to implement it.
 
-### Implement Features
+### &blacktriangleright; Implement Features
 
 Look through the GitHub issues for features. Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
 
-### Submit Feedback
+###  &blacktriangleright; Submit Feedback
 
 If you are proposing a feature:
 
@@ -54,7 +54,7 @@ Here's how to set up for local development.
     $ conda activate <ADD IN ENV NAME HERE> 
     ```
 
-3. Use `git` to create a branch for local development and make your changes:
+3. Create a branch for local development and make your changes:
 
     ```console
     $ git checkout -b name-of-your-fix-or-feature
