@@ -2,6 +2,15 @@
 
 ### 1. Motivation and purpose
 ### 2. Description of the data
+
+We will be analyzing 2 datasets: [pricePerProvince.csv](https://www.energyhub.org/electricity-prices/) and [municip_kWh.csv](https://open.canada.ca/data/en/dataset/8b434ac7-aedb-4698-90df-ba77424a551f/resource/b4b8ede1-512c-4e6f-92af-d0ff38cf4de5). 
+
+The first dataset (13 rows, 2 columns) contains the average total cost of electricity (`price per ¢/kWh`) by Canadian province (`province`), based on a monthly consumption of 1,000 kWh in 2023.
+
+The second dataset (45578 rows, 9 columns) contains the `Mean daily global insolation (kWh/m2)` measurements at different tilts (`South-facing with vertical (90 degrees) tilt`, `South-facing with latitude tilt`, `South-facing with tilt=latitude+15 degrees`, `South-facing with tilt=latitude-15 degrees`, `2-axis tracking`, `Horizontal (0 degree)`) of 3506 municipalities (`Municipality`) across all provinces of Canada (`Province`) for each month (`Month`) as well as for the year (same column contains it).
+
+Using this data, we would derive new variables such as the monetary value of the potential electricity generated from solar panels with a certain tilt, a certain location, and conversion rate (`potential_generated_value`), as it would be crucial for Tom to explore how much money he could save by installing solar panels either at his current location or elsewhere.
+
 ### 3. Research questions
 
 Tom is a resident of North Vancouver contemplating the installation of solar panels to economize on electricity costs. He faces uncertainty about the annual savings he might achieve, given the variability in sunlight exposure at his residence.  
