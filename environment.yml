@@ -1,0 +1,13 @@
+name: 'solar-saver'
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - ipykernel
+    - altair-all
+    - dash
+    - dash-bootstrap-components
+    - plotly
+    - pip
+pip:
+    - dash-vega-components
