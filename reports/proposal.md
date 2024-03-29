@@ -2,7 +2,14 @@
 
 ### 1. Motivation and purpose
 ### 2. Description of the data
-###  3. Research questions
+### 3. Research questions
+
+Tom is a resident of North Vancouver contemplating the installation of solar panels to economize on electricity costs. He faces uncertainty about the annual savings he might achieve, given the variability in sunlight exposure at his residence.  
+  
+Utilizing the "Solar Saver app," Tom is empowered to select his geographic location within Canada and adjust the efficiency settings of the solar panels through a slider, enabling a tailored solution to his needs. The application then provides an estimate of the annual average electricity savings (expressed in $kWh/m^2$), alongside detailed information on local electricity pricing and potential savings. This comprehensive data aids Tom in making an informed decision.  
+  
+From his research via the app, Tom ascertains that in North Vancouver, it's feasible to generate 3600 kW of electricity per square meter annually. By deploying two solar panels, each with dimensions of 0.5m by 1m, he stands to conserve 1200 kW of electricity each year, translating to savings of $800. Encouraged by these findings, he decided it was a good idea to install the solar panels and proceeded accordingly.
+
 ### 4. App sketch and description
 
 **App Sketch**
