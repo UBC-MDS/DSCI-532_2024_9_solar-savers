@@ -51,7 +51,7 @@ Here's how to set up for local development.
     ```
 
     ```console
-    $ conda activate <ADD IN ENV NAME HERE> 
+    $ conda activate solar-saver 
     ```
 
 3. Create a branch for local development and make your changes:
