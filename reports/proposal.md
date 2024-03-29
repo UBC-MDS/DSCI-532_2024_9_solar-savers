@@ -1,6 +1,11 @@
 # Milestone 1 - Dashboard proposal: Solar Savers 
 
 ### 1. Motivation and purpose
+
+The installation of a household solar energy system can be complicated for interested house owners. If we can visualize the potential savings of solar panels according to location and size according to different individuals, we can potentially motivate the house owners more for installation.
+
+To clearly communicate the benefits of these panels, we will use two data sets. We will use the mean daily electricity production of different locations in Canada using a standard solar panel (efficiency = 20%.) Then we will combine it with the electricity price of each province, to calculate how much monetary value of electricity each square meter of solar panel is able to generate daily. Then we will convert the value to annual saving and allow the users to choose the size of their installation.
+
 ### 2. Description of the data
 
 We will be analyzing 2 datasets: [pricePerProvince.csv](https://www.energyhub.org/electricity-prices/) and [municip_kWh.csv](https://open.canada.ca/data/en/dataset/8b434ac7-aedb-4698-90df-ba77424a551f/resource/b4b8ede1-512c-4e6f-92af-d0ff38cf4de5). 
