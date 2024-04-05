@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, callback, Output, Input
+from dash import Dash, html, dcc, callback, Output, Input, dash_table
 import dash_bootstrap_components as dbc
 import pandas as pd
 import os
@@ -47,7 +47,9 @@ ener_sav_card = dbc.Card(id='ener_card', children=[dbc.CardHeader('Energy Saving
 ## Savings
 savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Savings'), dbc.CardBody('$XXX /yr')]),
 
-
+## Price information card
+price_info_card = dash_table.DataTable(price_df.to_dict('records'), [{"name": i, "id": i} for i in price_df.columns],
+    style_table={'height': '300px', 'overflowY': 'auto'})
 
 # Layout
 app.layout = dbc.Container([
@@ -63,7 +65,7 @@ app.layout = dbc.Container([
                          dbc.Row(["Panel Comparison", 
                                   pan_com_dropdown])])),
         dbc.Col("Map Placeholder"),
-        dbc.Col(dbc.Row([title, title]))
+        dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ]),
     dbc.Row([
         dbc.Col(diff_sav_card),
@@ -103,6 +105,9 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         "Premium > 22%": 0.25
     }
     
+    if panel_comparison and len(panel_comparison) > 2:
+        panel_comparison = panel_comparison[:2]
+
     card_ener = [
         dbc.CardHeader('Energy Savings'),
         dbc.CardBody('XXX kWh/yr')
@@ -130,11 +135,9 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
                 comparison_values = [conversion_rate[value] for value in panel_comparison]
                 comparison_savings = []
                 for value in comparison_values:
-                    print(value)
                     comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
-                print(comparison_savings)
                 diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
-                card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr')])
+                card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
 
 
             return card_ener, card_sav, card_diff
