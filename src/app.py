@@ -169,7 +169,6 @@ def create_chart(panel_comparison, province, region, num_pan):
                     comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan * province_price)
                 df = pd.DataFrame({comp: [saving] for comp, saving in zip(panel_comparison, comparison_savings)})
                 df = df.T.reset_index().rename(columns={'index': 'Panel Comparison', 0: 'Savings'})
-                print(df)
                 return(
                     alt.Chart(df).mark_bar().encode(
                             y=alt.Y('Panel Comparison', title='Panel Comparison'),
