@@ -88,12 +88,21 @@ def update_region_dropdown(province_dropdown):
 @callback(
     Output('ener_card', 'children'),
     Output('sav_card', 'children'),
+    Output('diff_card', 'children'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value'),
     Input('panel_efficiency', 'value'),
-    Input('num_pan_slider', 'value')
+    Input('num_pan_slider', 'value'),
+    Input('panel_comparison', 'value')
 )
-def update_cards(province, region, efficiency, num_pan):
+def update_savings_cards(province, region, efficiency, num_pan, panel_comparison):
+    conversion_rate = {
+        "Low < 15%": 0.15,
+        "Standard 15-18%": 0.18,
+        "High 18-22%": 0.22,
+        "Premium > 22%": 0.25
+    }
+    
     card_ener = [
         dbc.CardHeader('Energy Savings'),
         dbc.CardBody('XXX kWh/yr')
@@ -103,28 +112,34 @@ def update_cards(province, region, efficiency, num_pan):
         dbc.CardHeader('Savings'),
         dbc.CardBody('$XXX/yr')
     ]
-
-    if efficiency == "Low < 15%":
-        conversion_rate = 0.15
-    elif efficiency == "Standard 15-18%":
-        conversion_rate = 0.18
-    elif efficiency == "High 18-22%":
-        conversion_rate = 0.22
-    elif efficiency == "Premium > 22%":
-        conversion_rate = 0.25
-    else:
-        conversion_rate = 0
-
+    
+    card_diff = [
+        dbc.CardHeader('Difference in Savings'),
+        dbc.CardBody('$XXX/yr')
+    ]
+ 
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
         filtered_row = sunlight_df[(sunlight_df['Province'] == province) & (sunlight_df['Municipality'] == region) & (sunlight_df['Month'] == 'Annual')]
         if not filtered_row.empty:
-            energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate * 1.65 * 365 * num_pan
+            energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
             card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/yr')])
             card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/yr')])
 
-            return card_ener, card_sav
-    return card_ener, card_sav
+            if panel_comparison and len(panel_comparison) >= 2:
+                comparison_values = [conversion_rate[value] for value in panel_comparison]
+                comparison_savings = []
+                for value in comparison_values:
+                    print(value)
+                    comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
+                print(comparison_savings)
+                diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
+                card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr')])
+
+
+            return card_ener, card_sav, card_diff
+    return card_ener, card_sav, card_diff
+
 
 # Run the app/dashboard
 if __name__ == '__main__':
