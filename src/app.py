@@ -1,6 +1,8 @@
 from dash import Dash, html, dcc, callback, Output, Input, dash_table
 import dash_bootstrap_components as dbc
+import dash_vega_components as dvc
 import pandas as pd
+import altair as alt
 import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +41,7 @@ pan_com_dropdown = dcc.Dropdown(id='panel_comparison', options=["Low < 15%", "St
 diff_sav_card = dbc.Card(id='diff_card', children=[dbc.CardHeader('Difference in Savings'), dbc.CardBody('$XXX /yr')]),
 
 ## Comparison graph
-
+comparison_graph = dvc.Vega(id='bars', spec={})
 
 ## Energy Savings Card
 ener_sav_card = dbc.Card(id='ener_card', children=[dbc.CardHeader('Energy Savings'), dbc.CardBody('XXX kWh/yr')]),
@@ -69,7 +71,7 @@ app.layout = dbc.Container([
             ]),
     dbc.Row([
         dbc.Col(diff_sav_card),
-        dbc.Col(title),
+        dbc.Col(comparison_graph),
         dbc.Col(ener_sav_card),
         dbc.Col(savings_card)
         ])
@@ -104,10 +106,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         "High 18-22%": 0.22,
         "Premium > 22%": 0.25
     }
-    
-    if panel_comparison and len(panel_comparison) > 2:
-        panel_comparison = panel_comparison[:2]
-
+ 
     card_ener = [
         dbc.CardHeader('Energy Savings'),
         dbc.CardBody('XXX kWh/yr')
@@ -142,6 +141,45 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
 
             return card_ener, card_sav, card_diff
     return card_ener, card_sav, card_diff
+
+@callback(
+    Output('bars', 'spec'),
+    Input('panel_comparison', 'value'),
+    Input('province_dropdown', 'value'),
+    Input('region_dropdown', 'value'),
+    Input('num_pan_slider', 'value'),
+)
+def create_chart(panel_comparison, province, region, num_pan):
+    if panel_comparison:
+        conversion_rate = {
+            "Low < 15%": 0.15,
+            "Standard 15-18%": 0.18,
+            "High 18-22%": 0.22,
+            "Premium > 22%": 0.25
+        }
+
+    if province and region:
+        province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
+        filtered_row = sunlight_df[(sunlight_df['Province'] == province) & (sunlight_df['Municipality'] == region) & (sunlight_df['Month'] == 'Annual')]
+        if not filtered_row.empty:
+            if panel_comparison and len(panel_comparison) >= 1:
+                comparison_values = [conversion_rate[value] for value in panel_comparison]
+                comparison_savings = []
+                for value in comparison_values:
+                    comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan * province_price)
+                df = pd.DataFrame({comp: [saving] for comp, saving in zip(panel_comparison, comparison_savings)})
+                df = df.T.reset_index().rename(columns={'index': 'Panel Comparison', 0: 'Savings'})
+                print(df)
+                return(
+                    alt.Chart(df).mark_bar().encode(
+                            y=alt.Y('Panel Comparison', title='Panel Comparison'),
+                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)
+                        ).interactive().to_dict()
+                )
+    else:
+        return {}
+
+
 
 
 # Run the app/dashboard
