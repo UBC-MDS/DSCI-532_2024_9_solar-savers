@@ -60,6 +60,15 @@ Here's how to set up for local development.
     $ git checkout -b name-of-your-fix-or-feature
     ```
 
+4. To run the dashboard, navigate to `src` then run `app.py`: 
+
+    ```console
+    $ cd src
+    ```
+    ```console
+    $ python app.py
+    ```
+
 4. When you're done making changes, check that your changes conform to any code formatting requirements.
 
 5. Commit and push your changes, then open a pull request with a detailed description outlining your contribution. 
