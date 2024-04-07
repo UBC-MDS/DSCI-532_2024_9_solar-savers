@@ -35,7 +35,7 @@ If you are interested in contributing to the development of the Solar Savers das
     ```
 
     ```console
-    $ conda activate solar-saver 
+    $ conda activate solar-savers
     ```
 
 3. Create a branch for local development and make your changes:
