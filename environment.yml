@@ -1,4 +1,4 @@
-name: 'solar-saver'
+name: 'solar-savers'
 channels:
     - conda-forge
     - defaults
@@ -9,5 +9,7 @@ dependencies:
     - dash-bootstrap-components
     - plotly
     - pip
+    - matplotlib
+    - geopandas
 pip:
     - dash-vega-components

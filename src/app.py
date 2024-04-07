@@ -4,11 +4,41 @@ import dash_vega_components as dvc
 import pandas as pd
 import altair as alt
 import os
+import geopandas as gpd
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1')
-sunlight_df = pd.read_csv("../data/processed/processed_municip_kWh.csv", encoding='latin1')
+price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price per ¢/kWh', ascending=False)
+# sunlight_df = pd.read_json("../data/processed/kWh_poly.json", lines=True, encoding='latin1')
+
+json_file_path = '../data/processed/kWh_poly.json'
+df1 = gpd.read_file(json_file_path)
+alt_data = df1.to_crs(epsg=4326)  
+
+file_path = '../data/raw/ne_50m_admin_1_states_provinces/ne_50m_admin_1_states_provinces.shp'
+gdf1 = gpd.read_file(file_path)
+gdf_ca = gdf1[gdf1['iso_a2'] == 'CA']
+
+background = alt.Chart(gdf_ca).mark_geoshape(
+    fill='lightgray',
+    stroke='white'
+).project(
+    'transverseMercator',
+    rotate=[90, 0, 0]
+).properties(
+    width=500,
+    height=400
+)
+
+points = alt.Chart(alt_data).mark_circle().encode(
+    longitude='longitude:Q', 
+    latitude='latitude:Q',   
+    size=alt.value(100),  
+    tooltip='Municipality:N'
+)
+
+combined_chart = background + points
+
 
 # Initiatlizion
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -18,7 +48,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 title = html.H1('Solar Savers')
 
 ## Province & Region Selection Dropdowns
-province_dropdown = dcc.Dropdown(id='province_dropdown', options=[{'label': province, 'value': province} for province in sunlight_df["Province"].unique()], value=None)
+province_dropdown = dcc.Dropdown(id='province_dropdown', options=[{'label': province, 'value': province} for province in alt_data["Province"].unique()], value=None)
 region_dropdown = dcc.Dropdown(id='region_dropdown', options=[], value=None)
 
 ## Number of Panels
@@ -50,8 +80,13 @@ ener_sav_card = dbc.Card(id='ener_card', children=[dbc.CardHeader('Energy Saving
 savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Savings'), dbc.CardBody('$XXX /yr')]),
 
 ## Price information card
+highlight_province = province_dropdown
+
+# Define the conditional formatting rule
 price_info_card = dash_table.DataTable(price_df.to_dict('records'), [{"name": i, "id": i} for i in price_df.columns],
-    style_table={'height': '300px', 'overflowY': 'auto'})
+    style_table={'height': '300px', 'overflowY': 'visible'}, 
+    style_cell={'fontSize': '12px'},
+    )
 
 # Layout
 app.layout = dbc.Container([
@@ -64,18 +99,22 @@ app.layout = dbc.Container([
                                   num_pan_slider]), 
                          dbc.Row(["Panel Efficiency", 
                                   pan_eff_dropdown]), 
+                         dbc.Row(html.Div(style={'height': '100px'})),
                          dbc.Row(["Panel Comparison", 
                                   pan_com_dropdown])])),
-        dbc.Col("Map Placeholder"),
+        dbc.Col(dvc.Vega(id="altair-chart",
+                        opt={"renderer": "svg", "actions": False},
+                        spec=combined_chart.to_dict()), width=5),
         dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
-            ]),
+            ], style={'height': '500px'}),
     dbc.Row([
         dbc.Col(diff_sav_card),
         dbc.Col(comparison_graph),
         dbc.Col(ener_sav_card),
         dbc.Col(savings_card)
         ])
-])
+], style={'margin': '10px'})
+
 
 # Callbacks and Reactivity
 @callback(
@@ -86,7 +125,7 @@ def update_region_dropdown(province_dropdown):
     if province_dropdown is None:
         return []
     else:
-        filtered_regions = sunlight_df[sunlight_df['Province'] == province_dropdown]['Municipality'].unique()
+        filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
         return [{'label': region, 'value': region} for region in filtered_regions]
 
 @callback(
@@ -124,7 +163,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
  
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
-        filtered_row = sunlight_df[(sunlight_df['Province'] == province) & (sunlight_df['Municipality'] == region) & (sunlight_df['Month'] == 'Annual')]
+        filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
             card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/yr')])
@@ -160,7 +199,7 @@ def create_chart(panel_comparison, province, region, num_pan):
 
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
-        filtered_row = sunlight_df[(sunlight_df['Province'] == province) & (sunlight_df['Municipality'] == region) & (sunlight_df['Month'] == 'Annual')]
+        filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             if panel_comparison and len(panel_comparison) >= 1:
                 comparison_values = [conversion_rate[value] for value in panel_comparison]
@@ -171,14 +210,14 @@ def create_chart(panel_comparison, province, region, num_pan):
                 df = df.T.reset_index().rename(columns={'index': 'Panel Comparison', 0: 'Savings'})
                 return(
                     alt.Chart(df).mark_bar().encode(
-                            y=alt.Y('Panel Comparison', title='Panel Comparison'),
-                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)
+                            y=alt.Y('Panel Comparison', title='Efficiency', sort='-x'),
+                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)                            
+                        ).properties(
+                            title = 'Panel Comparison'
                         ).interactive().to_dict()
                 )
     else:
         return {}
-
-
 
 
 # Run the app/dashboard
