@@ -26,8 +26,8 @@ background = alt.Chart(gdf_ca).mark_geoshape(
     'transverseMercator',
     rotate=[90, 0, 0]
 ).properties(
-    width=600,
-    height=500
+    width=500,
+    height=400
 )
 
 points = alt.Chart(alt_data).mark_circle().encode(
@@ -96,16 +96,20 @@ app.layout = dbc.Container([
                                   pan_eff_dropdown]), 
                          dbc.Row(["Panel Comparison", 
                                   pan_com_dropdown])])),
-        dbc.Col(dcc.Graph(figure=combined_chart.to_dict())),
+        dbc.Col(dvc.Vega(id="altair-chart",
+                        opt={"renderer": "svg", "actions": False},
+                        spec=combined_chart.to_dict()), width=3),
         dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
-            ]),
+            ], style={'height': '500px'}),
     dbc.Row([
         dbc.Col(diff_sav_card),
         dbc.Col(comparison_graph),
         dbc.Col(ener_sav_card),
         dbc.Col(savings_card)
         ])
-])
+], style={'margin': '10px'})
+
+
 
 # Callbacks and Reactivity
 @callback(
