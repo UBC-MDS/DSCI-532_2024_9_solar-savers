@@ -1,4 +1,4 @@
-name: 'solar-saver'
+name: 'solar-savers'
 channels:
     - conda-forge
     - defaults
@@ -13,5 +13,3 @@ dependencies:
     - geopandas
 pip:
     - dash-vega-components
-
-# need dash_vega_components 
