@@ -19,6 +19,8 @@ To start using the Solar Savers dashboard, click here: [Solar Savers Dashboard](
 
 On the dashboard, embark on your journey by selecting your location, desired number of panels, and panel efficiency. Use the Panel Comparison widget if you'd like to compare panels of different quality. Get started and watch in awe as your electricity and financial savings rise!
 
+![Demo](img/demo.gif)
+
 #### 🌱 Get involved!
 
 If you are interested in contributing to the development of the Solar Savers dashboard, please read the [contributing guidelines](CONTRIBUTING.md) for full details. Below are some quick steps to get started. 
