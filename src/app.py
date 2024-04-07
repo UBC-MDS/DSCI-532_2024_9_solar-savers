@@ -42,6 +42,7 @@ combined_chart = background + points
 
 # Initiatlizion
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # Components
 ## Title
@@ -222,4 +223,4 @@ def create_chart(panel_comparison, province, region, num_pan):
 
 # Run the app/dashboard
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
