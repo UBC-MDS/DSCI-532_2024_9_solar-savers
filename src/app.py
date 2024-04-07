@@ -8,7 +8,7 @@ import geopandas as gpd
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1')
+price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price per ¢/kWh', ascending=False)
 # sunlight_df = pd.read_json("../data/processed/kWh_poly.json", lines=True, encoding='latin1')
 
 json_file_path = '../data/processed/kWh_poly.json'
@@ -80,8 +80,13 @@ ener_sav_card = dbc.Card(id='ener_card', children=[dbc.CardHeader('Energy Saving
 savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Savings'), dbc.CardBody('$XXX /yr')]),
 
 ## Price information card
+highlight_province = province_dropdown
+
+# Define the conditional formatting rule
 price_info_card = dash_table.DataTable(price_df.to_dict('records'), [{"name": i, "id": i} for i in price_df.columns],
-    style_table={'height': '300px', 'overflowY': 'auto'})
+    style_table={'height': '300px', 'overflowY': 'visible'}, 
+    style_cell={'fontSize': '12px'},
+    )
 
 # Layout
 app.layout = dbc.Container([
@@ -94,11 +99,12 @@ app.layout = dbc.Container([
                                   num_pan_slider]), 
                          dbc.Row(["Panel Efficiency", 
                                   pan_eff_dropdown]), 
+                         dbc.Row(html.Div(style={'height': '100px'})),
                          dbc.Row(["Panel Comparison", 
                                   pan_com_dropdown])])),
         dbc.Col(dvc.Vega(id="altair-chart",
                         opt={"renderer": "svg", "actions": False},
-                        spec=combined_chart.to_dict()), width=3),
+                        spec=combined_chart.to_dict()), width=5),
         dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ], style={'height': '500px'}),
     dbc.Row([
@@ -108,7 +114,6 @@ app.layout = dbc.Container([
         dbc.Col(savings_card)
         ])
 ], style={'margin': '10px'})
-
 
 
 # Callbacks and Reactivity
@@ -205,12 +210,15 @@ def create_chart(panel_comparison, province, region, num_pan):
                 df = df.T.reset_index().rename(columns={'index': 'Panel Comparison', 0: 'Savings'})
                 return(
                     alt.Chart(df).mark_bar().encode(
-                            y=alt.Y('Panel Comparison', title='Panel Comparison'),
-                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)
+                            y=alt.Y('Panel Comparison', title='Efficiency', sort='-x'),
+                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)                            
+                        ).properties(
+                            title = 'Panel Comparison'
                         ).interactive().to_dict()
                 )
     else:
         return {}
+
 
 # Run the app/dashboard
 if __name__ == '__main__':
