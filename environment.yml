@@ -9,5 +9,9 @@ dependencies:
     - dash-bootstrap-components
     - plotly
     - pip
+    - matplotlib
+    - geopandas
 pip:
     - dash-vega-components
+
+# need dash_vega_components 

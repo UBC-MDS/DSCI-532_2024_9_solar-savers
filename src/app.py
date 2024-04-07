@@ -4,11 +4,41 @@ import dash_vega_components as dvc
 import pandas as pd
 import altair as alt
 import os
+import geopandas as gpd
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1')
-sunlight_df = pd.read_csv("../data/processed/processed_municip_kWh.csv", encoding='latin1')
+# sunlight_df = pd.read_json("../data/processed/kWh_poly.json", lines=True, encoding='latin1')
+
+json_file_path = '../data/processed/kWh_poly.json'
+df1 = gpd.read_file(json_file_path)
+alt_data = df1.to_crs(epsg=4326)  
+
+file_path = '../data/raw/ne_50m_admin_1_states_provinces/ne_50m_admin_1_states_provinces.shp'
+gdf1 = gpd.read_file(file_path)
+gdf_ca = gdf1[gdf1['iso_a2'] == 'CA']
+
+background = alt.Chart(gdf_ca).mark_geoshape(
+    fill='lightgray',
+    stroke='white'
+).project(
+    'transverseMercator',
+    rotate=[90, 0, 0]
+).properties(
+    width=600,
+    height=500
+)
+
+points = alt.Chart(alt_data).mark_circle().encode(
+    longitude='longitude:Q', 
+    latitude='latitude:Q',   
+    size=alt.value(100),  
+    tooltip='Municipality:N'
+)
+
+combined_chart = background + points
+
 
 # Initiatlizion
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -18,7 +48,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 title = html.H1('Solar Savers')
 
 ## Province & Region Selection Dropdowns
-province_dropdown = dcc.Dropdown(id='province_dropdown', options=[{'label': province, 'value': province} for province in sunlight_df["Province"].unique()], value=None)
+province_dropdown = dcc.Dropdown(id='province_dropdown', options=[{'label': province, 'value': province} for province in alt_data["Province"].unique()], value=None)
 region_dropdown = dcc.Dropdown(id='region_dropdown', options=[], value=None)
 
 ## Number of Panels
@@ -66,7 +96,7 @@ app.layout = dbc.Container([
                                   pan_eff_dropdown]), 
                          dbc.Row(["Panel Comparison", 
                                   pan_com_dropdown])])),
-        dbc.Col("Map Placeholder"),
+        dbc.Col(dcc.Graph(figure=combined_chart.to_dict())),
         dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ]),
     dbc.Row([
@@ -86,7 +116,7 @@ def update_region_dropdown(province_dropdown):
     if province_dropdown is None:
         return []
     else:
-        filtered_regions = sunlight_df[sunlight_df['Province'] == province_dropdown]['Municipality'].unique()
+        filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
         return [{'label': region, 'value': region} for region in filtered_regions]
 
 @callback(
@@ -124,7 +154,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
  
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
-        filtered_row = sunlight_df[(sunlight_df['Province'] == province) & (sunlight_df['Municipality'] == region) & (sunlight_df['Month'] == 'Annual')]
+        filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
             card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/yr')])
@@ -160,7 +190,7 @@ def create_chart(panel_comparison, province, region, num_pan):
 
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
-        filtered_row = sunlight_df[(sunlight_df['Province'] == province) & (sunlight_df['Municipality'] == region) & (sunlight_df['Month'] == 'Annual')]
+        filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             if panel_comparison and len(panel_comparison) >= 1:
                 comparison_values = [conversion_rate[value] for value in panel_comparison]
@@ -177,9 +207,6 @@ def create_chart(panel_comparison, province, region, num_pan):
                 )
     else:
         return {}
-
-
-
 
 # Run the app/dashboard
 if __name__ == '__main__':
