@@ -46,7 +46,11 @@ server = app.server
 
 # Components
 ## Title
-title = html.H1('Solar Savers')
+title = html.H1('Solar Savers',
+                style={
+                    'backgroundColor': 'orange',
+                    # 'text-align': 'center'
+                })
 
 ## Province & Region Selection Dropdowns
 province_dropdown = dcc.Dropdown(id='province_dropdown', options=[{'label': province, 'value': province} for province in alt_data["Province"].unique()], value=None)
@@ -91,8 +95,9 @@ price_info_card = dash_table.DataTable(price_df.to_dict('records'), [{"name": i,
 
 # Layout
 app.layout = dbc.Container([
+    dbc.Row([title]),
     dbc.Row([
-        dbc.Col(dbc.Row([title, 
+        dbc.Col(dbc.Row([ 
                          dbc.Row(["Province & Region Selection", 
                                   province_dropdown, 
                                   region_dropdown]),
@@ -104,8 +109,8 @@ app.layout = dbc.Container([
                          dbc.Row(savings_card)])),
         dbc.Col(dvc.Vega(id="altair-chart",
                         opt={"renderer": "svg", "actions": False},
-                        spec=combined_chart.to_dict()), width=5),
-        dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
+                        spec=combined_chart.to_dict()), width=7),
+        # dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ], style={'height': '500px'}),
     dbc.Row([
         dbc.Col(["Panel Comparison", 
@@ -222,4 +227,5 @@ def create_chart(panel_comparison, province, region, num_pan):
 
 # Run the app/dashboard
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
+    
