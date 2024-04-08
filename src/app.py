@@ -100,19 +100,18 @@ app.layout = dbc.Container([
                                   num_pan_slider]), 
                          dbc.Row(["Panel Efficiency", 
                                   pan_eff_dropdown]), 
-                         dbc.Row(html.Div(style={'height': '100px'})),
-                         dbc.Row(["Panel Comparison", 
-                                  pan_com_dropdown])])),
+                         dbc.Row(ener_sav_card),
+                         dbc.Row(savings_card)])),
         dbc.Col(dvc.Vega(id="altair-chart",
                         opt={"renderer": "svg", "actions": False},
                         spec=combined_chart.to_dict()), width=5),
         dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ], style={'height': '500px'}),
     dbc.Row([
-        dbc.Col(diff_sav_card),
+        dbc.Col(["Panel Comparison", 
+                    pan_com_dropdown]),
         dbc.Col(comparison_graph),
-        dbc.Col(ener_sav_card),
-        dbc.Col(savings_card)
+        dbc.Col(diff_sav_card)
         ])
 ], style={'margin': '10px'})
 
