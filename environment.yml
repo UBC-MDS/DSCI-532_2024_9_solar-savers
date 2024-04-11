@@ -11,5 +11,5 @@ dependencies:
     - pip
     - matplotlib
     - geopandas
-pip:
-    - dash-vega-components
+    - pip:
+        - dash-vega-components
