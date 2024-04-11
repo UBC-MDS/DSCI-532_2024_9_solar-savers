@@ -26,7 +26,7 @@ points = alt.Chart(alt_data).mark_circle().encode(
     color=alt.Color('South-facing with vertical (90 degrees) tilt',
                     scale=alt.Scale(scheme="lighttealblue"),
                     legend=alt.Legend(title='Solar Energy (kWh)')),     
-    size=alt.value(100),  
+    size=alt.value(50),  
     tooltip='Municipality:N',
     )
 
