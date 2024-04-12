@@ -22,10 +22,14 @@ background = alt.Chart(gdf_ca).mark_geoshape(
 
 points = alt.Chart(alt_data).mark_circle().encode(
     longitude='longitude:Q', 
-    latitude='latitude:Q',   
-    size=alt.value(100),  
-    tooltip='Municipality:N'
-)
+    latitude='latitude:Q',
+    color=alt.Color('South-facing with vertical (90 degrees) tilt',
+                    scale=alt.Scale(scheme="lighttealblue"),
+                    legend=alt.Legend(title='Solar Energy (kWh)')),     
+    size=alt.value(50),  
+    tooltip='Municipality:N',
+    )
+
 
 combined_chart = background + points
 
