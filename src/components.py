@@ -7,6 +7,7 @@ import altair as alt
 
 
 from .data import alt_data, price_df, gdf_ca, panel_df
+from .data import alt_data, price_df, gdf_ca, panel_df
 
 
 background = alt.Chart(gdf_ca).mark_geoshape(
@@ -57,6 +58,7 @@ num_pan_slider = dcc.Slider(id='num_pan_slider',
                             )
 
 ## Panel Efficiency
+pan_eff_dropdown = dcc.Dropdown(id='panel_efficiency', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None)
 pan_eff_dropdown = dcc.Dropdown(id='panel_efficiency', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None)
 
 ## Panel Comparison
