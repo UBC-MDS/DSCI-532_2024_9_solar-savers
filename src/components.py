@@ -6,12 +6,23 @@ import altair as alt
 
 from .data import alt_data, price_df, gdf_ca, panel_df
 
+fac = 2.8
+scale = 620*fac
+translate = [135*fac, 665*fac]
+
+province_zoom = {'British Colubmia': {'scale': 1200, 'translate': [660, 1460]}, 
+                'Alberta': {'scale': 1680, 'translate': [644, 1876]}, 
+                'Saskatchewan':{'scale': 1736, 'translate': [523, 1890]}, 
+                'Manitoba':{'scale': 1736, 'translate': [378, 1862]}}
+
 background = alt.Chart(gdf_ca).mark_geoshape(
     fill='lightgray',
     stroke='white'
 ).project(
-    'transverseMercator',
-    rotate=[90, 0, 0]
+    type = 'transverseMercator',
+    rotate=[90, 0, 0], 
+    #scale = scale, 
+    #translate=translate
 ).properties(
     width=500,
     height=400
@@ -21,14 +32,18 @@ points = alt.Chart(alt_data).mark_circle().encode(
     longitude='longitude:Q', 
     latitude='latitude:Q',
     color=alt.Color('South-facing with vertical (90 degrees) tilt',
-                    scale=alt.Scale(scheme="oranges"),
+                    scale=alt.Scale(scheme="lighttealblue"),
                     legend=alt.Legend(title='Solar Energy (kWh)')),     
     size=alt.value(50),  
     tooltip='Municipality:N',
+    ).project(
+        type = 'transverseMercator',
+        rotate=[90, 0, 0], 
+        #scale = scale, 
+        #translate=translate
     )
-
-
 combined_chart = background + points
+
 
 
 # Components
