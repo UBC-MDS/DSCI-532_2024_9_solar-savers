@@ -8,14 +8,25 @@ from .data import alt_data, price_df, panel_df
 # Callbacks and Reactivity
 @callback(
     Output('region_dropdown', 'options'),
+    Output('backgroundchart', 'spec')
     Input('province_dropdown', 'value')
 )
 def update_region_dropdown(province_dropdown):
     if province_dropdown is None:
-        return []
+        return [], (default_alt1 + default_alt2).to_dict()
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
-        return [{'label': region, 'value': region} for region in filtered_regions]
+
+        scale=dictionary[province_dropdown][scale]
+        translatedictionary[province_dropdown][translate]
+
+        altplot1
+        altplot2
+
+        output_chart = (alt1 + alt2).to_dict()
+        return [{'label': region, 'value': region} for region in filtered_regions], output_chart 
+
+
 
 @callback(
     Output('ener_card', 'children'),

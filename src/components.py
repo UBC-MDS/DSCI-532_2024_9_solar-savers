@@ -6,6 +6,8 @@ import altair as alt
 
 from .data import alt_data, price_df, gdf_ca, panel_df
 
+background_chart = dvc.Vega(id='backgroundchart', spec={(background + points).to_dict()})
+
 background = alt.Chart(gdf_ca).mark_geoshape(
     fill='lightgray',
     stroke='white'
