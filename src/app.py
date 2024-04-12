@@ -22,8 +22,15 @@ app.layout = dbc.Container([
                                   num_pan_slider]), 
                          dbc.Row(["Panel Efficiency", 
                                   pan_eff_dropdown]), 
-                         dbc.Row(ener_sav_card),
-                         dbc.Row(savings_card)])),
+                         dbc.Row([
+                                    dbc.Col(ener_sav_card, width=5, style={'margin-right': 0, 'padding-right': 0}),  
+                                    dbc.Col(savings_card, width=5, style={'margin-left': 0, 'padding-left': 0})
+                                ], style={'margin-left': 0, 'margin-right': 0}),
+                         dbc.Row([
+                                    dbc.Col(cost_card, width=5, style={'margin-right': 0, 'padding-right': 0}),  
+                                    dbc.Col(payback_card, width=5, style={'margin-left': 0, 'padding-left': 0})
+                                ], style={'margin-left': 0, 'margin-right': 0})
+                         ])),
         dbc.Col(dvc.Vega(id="altair-chart",
                         opt={"renderer": "svg", "actions": False},
                         spec=combined_chart.to_dict()), width=7),

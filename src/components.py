@@ -59,7 +59,6 @@ num_pan_slider = dcc.Slider(id='num_pan_slider',
 
 ## Panel Efficiency
 pan_eff_dropdown = dcc.Dropdown(id='panel_efficiency', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None)
-pan_eff_dropdown = dcc.Dropdown(id='panel_efficiency', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None)
 
 ## Panel Comparison
 pan_com_dropdown = dcc.Dropdown(id='panel_comparison', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None, multi=True)
@@ -71,10 +70,16 @@ diff_sav_card = dbc.Card(id='diff_card', children=[dbc.CardHeader('Difference in
 comparison_graph = dvc.Vega(id='bars', spec={})
 
 ## Energy Savings Card
-ener_sav_card = dbc.Card(id='ener_card', children=[dbc.CardHeader('Energy Savings'), dbc.CardBody('XXX kWh/yr')]),
+ener_sav_card = dbc.Card(id='ener_card', children=[dbc.CardHeader('Energy Savings'), dbc.CardBody('XXX kWh/year')]),
 
 ## Savings
-savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Savings'), dbc.CardBody('$XXX /yr')]),
+savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Savings'), dbc.CardBody('$XXX /year')]),
+
+## panel cost Card
+cost_card = dbc.Card(id='cost_card', children=[dbc.CardHeader('Panel Costs'), dbc.CardBody('$XXX')])
+
+## Payback period Card
+payback_card = dbc.Card(id='payback_card', children=[dbc.CardHeader('Payback Period'), dbc.CardBody('X year')])
 
 ## Price information card
 highlight_province = province_dropdown
