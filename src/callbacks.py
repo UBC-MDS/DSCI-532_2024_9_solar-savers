@@ -4,7 +4,7 @@ import altair as alt
 import pandas as pd
 
 
-from .data import alt_data, price_df
+from .data import alt_data, price_df, panel_df
 
 # Callbacks and Reactivity
 @callback(
@@ -29,13 +29,7 @@ def update_region_dropdown(province_dropdown):
     Input('panel_comparison', 'value')
 )
 def update_savings_cards(province, region, efficiency, num_pan, panel_comparison):
-    conversion_rate = {
-        "Low < 15%": 0.15,
-        "Standard 15-18%": 0.18,
-        "High 18-22%": 0.22,
-        "Premium > 22%": 0.25
-    }
- 
+    conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     card_ener = [
         dbc.CardHeader('Energy Savings'),
         dbc.CardBody('XXX kWh/yr')
@@ -80,13 +74,13 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
 )
 def create_chart(panel_comparison, province, region, num_pan):
     if panel_comparison:
-        conversion_rate = {
-            "Low < 15%": 0.15,
-            "Standard 15-18%": 0.18,
-            "High 18-22%": 0.22,
-            "Premium > 22%": 0.25
-        }
-
+        conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
+        # conversion_rate = {
+        #     "Low < 15%": 0.15,
+        #     "Standard 15-18%": 0.18,
+        #     "High 18-22%": 0.22,
+        #     "Premium > 22%": 0.25
+        # }
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
