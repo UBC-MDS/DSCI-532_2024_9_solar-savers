@@ -4,7 +4,7 @@ import altair as alt
 import pandas as pd
 
 
-from data import alt_data, price_df
+from src.data import alt_data, price_df
 
 # Callbacks and Reactivity
 @callback(
