@@ -20,6 +20,8 @@ def update_region_dropdown(province_dropdown):
 @callback(
     Output('ener_card', 'children'),
     Output('sav_card', 'children'),
+    Output('cost_card', 'children'),
+    Output('payback_card', 'children'),
     Output('diff_card', 'children'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value'),
@@ -29,6 +31,8 @@ def update_region_dropdown(province_dropdown):
 )
 def update_savings_cards(province, region, efficiency, num_pan, panel_comparison):
     conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
+    panel_price = {row['name ']: row['price '] for index, row in panel_df.iterrows()}
+
     card_ener = [
         dbc.CardHeader('Energy Savings'),
         dbc.CardBody('XXX kWh/yr')
@@ -49,8 +53,10 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
-            card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/yr')])
-            card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/yr')])
+            card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/year')])
+            card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/year')])
+            card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
+            card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
 
             if panel_comparison and len(panel_comparison) >= 2:
                 comparison_values = [conversion_rate[value] for value in panel_comparison]
@@ -61,8 +67,8 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
                 card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
 
 
-            return card_ener, card_sav, card_diff
-    return card_ener, card_sav, card_diff
+            return card_ener, card_sav, card_cost, card_payback, card_diff
+    return card_ener, card_sav, card_cost, card_payback, card_diff
 
 @callback(
     Output('bars', 'spec'),
