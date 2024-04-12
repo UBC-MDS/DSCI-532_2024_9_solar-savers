@@ -3,7 +3,6 @@ import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
 
-
 from .data import alt_data, price_df, panel_df
 
 # Callbacks and Reactivity
@@ -102,3 +101,49 @@ def create_chart(panel_comparison, province, region, num_pan):
                 )
     else:
         return {}
+    
+def max_rectangles_with_residual(a, b, x, y):
+    # First orientation
+    count_x = a // x
+    count_y = b // y
+    total_first = count_x * count_y
+
+    # Residual space calculation for first orientation
+    residual_a = a - count_x * x
+    residual_b = b - count_y * y
+    additional_first = (residual_a // y) * count_y + (residual_b // x) * count_x
+
+    # Second orientation (rotated small rectangles)
+    count_x_rotated = a // y
+    count_y_rotated = b // x
+    total_second = count_x_rotated * count_y_rotated
+
+    # Residual space calculation for second orientation
+    residual_a_rotated = a - count_x_rotated * y
+    residual_b_rotated = b - count_y_rotated * x
+    additional_second = (residual_a_rotated // x) * count_y_rotated + (residual_b_rotated // y) * count_x_rotated
+
+    # Sum totals and additional fits
+    total_with_residual_first = total_first + additional_first
+    total_with_residual_second = total_second + additional_second
+
+    # Return the maximum of the two orientations considering the residual spaces
+    return max(total_with_residual_first, total_with_residual_second)
+    
+panel_df['length_m'] = panel_df['length (mm) '] / 1000
+panel_df['width_m'] = panel_df['width (mm)'] / 1000
+
+# Assume that your CSV has a single type of panel, otherwise, you'll need to handle multiple types.
+panel_length = panel_df['length_m'].iloc[0]
+panel_width = panel_df['width_m'].iloc[0]
+
+@callback(
+    Output('output-panel-count', 'children'),
+    [Input('input-roof-width', 'value'),
+     Input('input-roof-length', 'value')]
+)
+def calculate_max_panels(roof_width, roof_length):
+    if roof_width is not None and roof_length is not None and roof_width > 0 and roof_length > 0:
+        max_fit = max_rectangles_with_residual(roof_width, roof_length, panel_width, panel_length)
+        return f'Maximum panels that can fit: {max_fit}'
+    return 'Enter valid roof dimensions'
