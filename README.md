@@ -46,13 +46,13 @@ If you are interested in contributing to the development of the Solar Savers das
     $ git checkout -b name-of-your-fix-or-feature
     ```
 
-4. To run the dashboard. Navigate to `src` then run `app.py`: 
+4. To run the dashboard. Navigate to `DSCI-532_2024_9_solar-savers/` then run `python -m src.app`: 
 
     ```console
-    $ cd src
+    $ cd DSCI-532_2024_9_solar-savers/
     ```
     ```console
-    $ python app.py
+    $ python -m src.app
     ```
 
 ## Contributing
