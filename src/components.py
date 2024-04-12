@@ -6,7 +6,7 @@ import altair as alt
 
 
 
-from data import alt_data, price_df, gdf_ca
+from .data import alt_data, price_df, gdf_ca
 
 
 background = alt.Chart(gdf_ca).mark_geoshape(
