@@ -4,11 +4,7 @@ import dash_vega_components as dvc
 import pandas as pd
 import altair as alt
 
-
-
 from .data import alt_data, price_df, gdf_ca, panel_df
-from .data import alt_data, price_df, gdf_ca, panel_df
-
 
 background = alt.Chart(gdf_ca).mark_geoshape(
     fill='lightgray',
@@ -89,3 +85,27 @@ price_info_card = dash_table.DataTable(price_df.to_dict('records'), [{"name": i,
     style_table={'height': '300px', 'overflowY': 'visible'}, 
     style_cell={'fontSize': '12px'},
     )
+
+# optimization fuction 
+
+roof_width_input = dbc.Row(
+    [
+        dbc.Col(html.Div("Roof Width (meters):"), width=4),
+        dbc.Col(dbc.Input(id='input-roof-width', type='number', placeholder='Enter width in meters'), width=8),
+    ],
+    className='mb-2'
+)
+
+roof_length_input = dbc.Row(
+    [
+        dbc.Col(html.Div("Roof Length (meters):"), width=4),
+        dbc.Col(dbc.Input(id='input-roof-length', type='number', placeholder='Enter length in meters'), width=8),
+    ],
+    className='mb-2'
+)
+
+# Output component for the number of solar panels
+output_panel_count = dbc.Row(
+    html.Div(id='output-panel-count'),
+    className='mt-2'
+)
