@@ -1,9 +1,9 @@
 from dash import Dash
 import dash_bootstrap_components as dbc
 import dash_vega_components as dvc
-from src.callbacks import *
-from src.components import * # title, province_dropdown, region_dropdown, num_pan_slider, pan_eff_dropdown, ener_sav_card, savings_card, combined_chart, pan_com_dropdown, comparison_graph, diff_sav_card
 
+from .callbacks import *
+from .components import *
 
 # Initiatlizion
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -40,5 +40,5 @@ app.layout = dbc.Container([
 
 # Run the app/dashboard
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
     
