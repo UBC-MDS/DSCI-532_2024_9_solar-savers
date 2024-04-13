@@ -34,6 +34,7 @@ app.layout = dbc.Container([
                          ])),
 
         dbc.Col(altair_chart, width=7),
+
         # dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ], style={'height': '600px'}),
     dbc.Row([

@@ -6,8 +6,6 @@ import altair as alt
 
 from .data import alt_data, price_df, gdf_ca, panel_df
 
-
-
 # Components
 ## Title
 title = html.H1('Solar Savers',
