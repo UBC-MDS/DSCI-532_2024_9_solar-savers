@@ -33,9 +33,8 @@ app.layout = dbc.Container([
                                 ], style={'margin-left': 0, 'margin-right': 0})
                          ])),
 
-        dbc.Col(dvc.Vega(id="altair-chart",
-                        opt={"renderer": "svg", "actions": False},
-                        spec=combined_chart.to_dict()), width=7),
+        dbc.Col(altair_chart, width=7),
+
         # dbc.Col(dbc.Row(["Legend Placeholder", price_info_card]))
             ], style={'height': '600px'}),
     dbc.Row([

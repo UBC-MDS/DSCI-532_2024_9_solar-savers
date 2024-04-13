@@ -3,19 +3,92 @@ import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
 
-from .data import alt_data, price_df, panel_df
+from .data import alt_data, price_df, panel_df, gdf_ca
 
 # Callbacks and Reactivity
 @callback(
     Output('region_dropdown', 'options'),
+    Output('altair-chart', 'spec'),
     Input('province_dropdown', 'value')
 )
 def update_region_dropdown(province_dropdown):
     if province_dropdown is None:
-        return []
+        background = alt.Chart(gdf_ca).mark_geoshape(
+        fill='lightgray',
+        stroke='white'
+        ).project(
+            type='transverseMercator',
+            rotate=[90, 0, 0], 
+            # scale=scale, 
+            # translate=translate
+        ).properties(
+            width=500,
+            height=400
+        )
+
+        points = alt.Chart(alt_data).mark_circle().encode(
+        longitude='longitude:Q', 
+        latitude='latitude:Q',
+        color=alt.Color('South-facing with vertical (90 degrees) tilt',
+                        scale=alt.Scale(scheme="lighttealblue"),
+                        legend=alt.Legend(title='Solar Energy (kWh)')),     
+        size=alt.value(50),  
+        tooltip='Municipality:N',
+        ).project(
+            type='transverseMercator',
+            rotate=[90, 0, 0], 
+            # scale=scale, 
+            # translate=translate
+        )
+        combined_chart = background + points
+
+        return [], combined_chart.to_dict()
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
-        return [{'label': region, 'value': region} for region in filtered_regions]
+
+        # fac = 2.8
+        # scale = 620*fac
+        # translate = [135*fac, 665*fac]
+
+        province_zoom = {'British Columbia': {'scale': 1200, 'translate': [660, 1460]}, 
+                'Alberta': {'scale': 1680, 'translate': [644, 1876]}, 
+                'Saskatchewan':{'scale': 1736, 'translate': [523, 1890]}, 
+                'Manitoba':{'scale': 1736, 'translate': [378, 1862]}}
+
+        scale = province_zoom[province_dropdown]["scale"]
+        translate = province_zoom[province_dropdown]["translate"]
+
+        background = alt.Chart(gdf_ca).mark_geoshape(
+        fill='lightgray',
+        stroke='white'
+        ).project(
+            type='transverseMercator',
+            rotate=[90, 0, 0], 
+            scale=scale, 
+            translate=translate
+        ).properties(
+            width=500,
+            height=400
+        )
+
+        points = alt.Chart(alt_data).mark_circle().encode(
+        longitude='longitude:Q', 
+        latitude='latitude:Q',
+        color=alt.Color('South-facing with vertical (90 degrees) tilt',
+                        scale=alt.Scale(scheme="lighttealblue"),
+                        legend=alt.Legend(title='Solar Energy (kWh)')),     
+        size=alt.value(50),  
+        tooltip='Municipality:N',
+        ).project(
+            type='transverseMercator',
+            rotate=[90, 0, 0], 
+            scale=scale, 
+            translate=translate
+        )
+        combined_chart = background + points
+        return [{'label': region, 'value': region} for region in filtered_regions], combined_chart.to_dict()
+
+
 
 @callback(
     Output('ener_card', 'children'),
@@ -47,7 +120,17 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         dbc.CardHeader('Difference in Savings'),
         dbc.CardBody('$XXX/yr')
     ]
- 
+
+    card_cost = [
+        dbc.CardHeader('Panel Costs'),
+        dbc.CardBody('$XXX')
+    ]
+
+    card_payback = [
+        dbc.CardHeader('Payback Period'),
+        dbc.CardBody('X year')
+    ]
+
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
@@ -55,6 +138,11 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
             card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/year')])
             card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/year')])
+
+            # card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
+            # card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
+
+        if efficiency:
             card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
             card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
 
