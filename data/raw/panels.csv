@@ -1,21 +1,21 @@
-name ,efficiency ,price ,length (mm) ,width (mm)
-Vsun 450W Bi-Facial Solar Panel | PERC Cell Technology,0.202,399,2121.92,1047.75
-Vsun 450W Bi-Facial Solar Panel | PERC Cell Technology,0.196,275,1664.97,1000.76
-SunPower - Semi Flexible Solar Panel 100W,0.230,199,1165.00,556.00
-LG 410W NeON® H+ Solar Panel | LG410N3C-V6,0.209,451,1879.85,1041.91
-Elios Voltaic200 | 200W Mono Solar Panel | V200M-48V,0.229,275,1495.00,680.00
-"Hanwha 470W Solar Panel | Q.PEAK DUO XL-G10 Bifacial, MC4",0.203,424,2215.90,1043.94
-Elios Voltaic400HC-BF | 400W BI-Facial Mono Solar Panel,0.205,225,1721.00,1133.00
-Elios Voltaic550HC-BF | 550W BI-Facial Mono Solar Panel,0.213,319,2277.00,1133.00
-Elios Voltaic110F | 110W Semi-Flexible Solar Panel,0.193,139,1079.50,562.00
-Elios Voltaic 210F-B | 210W Semi-Flexible Balcony Solar Panel,0.193,299,1083.00,1104.00
-Elios Voltaic 210F-T | 210W Semi-Flexible Solar Panel with 3M Tape,0.193,350,1083.00,1040.00
-Canadian Solar 340W Solar Panel | CS1H-340MS,0.189,309,1701.80,1016.00
-Peimar SM385M Solar Panel 385W,0.194,370,1978.91,1000.76
-Peimar SM400M Solar Panel 400W | SM400M,0.196,339,1979.00,1002.00
-Hanwha 400W Solar Panel | Q.PEAK DUO L-G7.7,0.196,385,2014.22,1000.76
-SunPower - Semi Flexible Solar Panel 50W,0.230,135,653.00,556.00
-Canadian Solar Bi-facial 445W Solar Panel | CS3W-445MB-AG,0.189,389,2133.60,1066.80
-LG 370W All Black NeON Solar Panel | LG370N1K-E6,0.193,407,1752.60,1041.40
-LG 445W NeON® H Commercial Solar Panel | LG445N2W-E6,0.202,489.5,2109.98,1041.91
-LG 380W NeON® H Black Residential Solar Panel | LG380N1K-E6,0.206,418,1772.92,1041.91
+name ,full name ,efficiency ,price ,length (mm) ,width (mm)
+Canadian Solar 340W (309 CAD),Canadian Solar 340W Solar Panel | CS1H-340MS,0.189,309,1701.80,1016.00
+Canadian Solar 445W (389 CAD),Canadian Solar Bi-facial 445W Solar Panel | CS3W-445MB-AG,0.189,389,2133.60,1066.80
+Elios Voltaic 210W (299 CAD),Elios Voltaic 210F-B | 210W Semi-Flexible Balcony Solar Panel,0.193,299,1083.00,1104.00
+Elios Voltaic 210W (350 CAD),Elios Voltaic 210F-T | 210W Semi-Flexible Solar Panel with 3M Tape,0.193,350,1083.00,1040.00
+Elois Voltaic 110W (139 CAD),Elios Voltaic110F | 110W Semi-Flexible Solar Panel,0.193,139,1079.50,562.00
+Elios Voltaic 200W (275 CAD),Elios Voltaic200 | 200W Mono Solar Panel | V200M-48V,0.229,275,1495.00,680.00
+Elios Voltaic 400W (225 CAD),Elios Voltaic400HC-BF | 400W BI-Facial Mono Solar Panel,0.205,225,1721.00,1133.00
+Elios Voltaic 550W (319 CAD),Elios Voltaic550HC-BF | 550W BI-Facial Mono Solar Panel,0.213,319,2277.00,1133.00
+Hanwha 400W (385 CAD),Hanwha 400W Solar Panel | Q.PEAK DUO L-G7.7,0.196,385,2014.22,1000.76
+Hanwha 470W (424 CAD),"Hanwha 470W Solar Panel | Q.PEAK DUO XL-G10 Bifacial, MC4",0.203,424,2215.90,1043.94
+LG 370W (407 CAD),LG 370W All Black NeON Solar Panel | LG370N1K-E6,0.193,407,1752.60,1041.40
+LG 380W (418 CAD),LG 380W NeON® H Black Residential Solar Panel | LG380N1K-E6,0.206,418,1772.92,1041.91
+LG 410W (451 CAD) ,LG 410W NeON® H+ Solar Panel | LG410N3C-V6,0.209,451,1879.85,1041.91
+LG 445W (490 CAD),LG 445W NeON® H Commercial Solar Panel | LG445N2W-E6,0.202,489.5,2109.98,1041.91
+Peimar 385W (370 CAD),Peimar SM385M Solar Panel 385W,0.194,370,1978.91,1000.76
+Peimar 400W (339 CAD),Peimar SM400M Solar Panel 400W | SM400M,0.196,339,1979.00,1002.00
+SunPower 100W (199 CAD) ,SunPower - Semi Flexible Solar Panel 100W,0.230,199,1165.00,556.00
+SunPower 50W (135 CAD) ,SunPower - Semi Flexible Solar Panel 50W,0.230,135,653.00,556.00
+PERC Tech 450W (399 CAD) ,Vsun 450W Bi-Facial Solar Panel | PERC Cell Technology,0.202,399,2121.92,1047.75
+PERC Tech 450W (275 CAD) ,Vsun 450W Bi-Facial Solar Panel | PERC Cell Technology,0.196,275,1664.97,1000.76
