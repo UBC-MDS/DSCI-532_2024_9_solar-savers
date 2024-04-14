@@ -45,15 +45,21 @@ def update_region_dropdown(province_dropdown):
         return [], combined_chart.to_dict()
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
-
-        # fac = 2.8
-        # scale = 620*fac
-        # translate = [135*fac, 665*fac]
-
+      
         province_zoom = {'British Columbia': {'scale': 1200, 'translate': [660, 1460]}, 
                 'Alberta': {'scale': 1680, 'translate': [644, 1876]}, 
                 'Saskatchewan':{'scale': 1736, 'translate': [523, 1890]}, 
-                'Manitoba':{'scale': 1736, 'translate': [378, 1862]}}
+                'Manitoba':{'scale': 1736, 'translate': [378, 1862]},
+                'Ontario':{'scale': 1484, 'translate': [168, 1470]}, 
+                'Quebec': {'scale': 1113, 'translate': [10.5, 1260]}, 
+                'Northwest Territories': {'scale': 1220, 'translate': [520,1640]}, 
+                'Yukon Territory': {'scale': 1240, 'translate': [600, 1720]},
+                'Nunavut': {'scale': 880, 'translate':[260, 1320]}, 
+                'New Brunswick': {'scale': 1480, 'translate': [-200, 1400]}, 
+                'Nova Scotia': {'scale': 1480, 'translate': [-200, 1400]}, 
+                'Prince Edward Island': {'scale': 1480, 'translate': [-200, 1400]}, 
+                'Newfoundland and Labrador': {'scale': 1160, 'translate': [-140, 1320]}
+                }
 
         scale = province_zoom[province_dropdown]["scale"]
         translate = province_zoom[province_dropdown]["translate"]
@@ -87,8 +93,6 @@ def update_region_dropdown(province_dropdown):
         )
         combined_chart = background + points
         return [{'label': region, 'value': region} for region in filtered_regions], combined_chart.to_dict()
-
-
 
 @callback(
     Output('ener_card', 'children'),
