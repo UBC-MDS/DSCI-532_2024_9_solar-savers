@@ -25,7 +25,7 @@ def update_region_dropdown(province_dropdown):
             width=500,
             height=400
         )
-
+        
         points = alt.Chart(alt_data).mark_circle().encode(
         longitude='longitude:Q', 
         latitude='latitude:Q',
@@ -243,5 +243,5 @@ panel_width = panel_df['width_m'].iloc[0]
 def calculate_max_panels(roof_width, roof_length):
     if roof_width is not None and roof_length is not None and roof_width > 0 and roof_length > 0:
         max_fit = max_rectangles_with_residual(roof_width, roof_length, panel_width, panel_length)
-        return f'Maximum panels that can fit: {max_fit}'
-    return 'Enter valid roof dimensions'
+        return f'Maximum panels for your roof: {max_fit}'
+    return 'Maximum panels for your roof:'
