@@ -32,7 +32,7 @@ roof_dimensions = dbc.Row(
         'padding': 7,
         'border-radius': 3
     })
-# Savings Summary Cards
+# Savings Summary
 savings_summary = dbc.Row(
     [ 
         dbc.Col(ener_sav_card, width=6, style={'margin-right': 0, 'padding-right': 0}),  
@@ -42,8 +42,13 @@ savings_summary = dbc.Row(
     style={'margin-left': 0, 'margin-right': 0}
 )
 
-
-
+# Cost & Payback Summary
+cost_summary = dbc.Row(
+    [
+        dbc.Col(cost_card, width=6, style={'margin-right': 0, 'padding-right': 0}),  
+        dbc.Col(payback_card, width=6, style={'margin-left': 0, 'padding-left': 0})
+    ], 
+    style={'margin-left': 0, 'margin-right': 0})
 
 # Sidebar layout
 sidebar = dbc.Col([
@@ -60,7 +65,8 @@ sidebar = dbc.Col([
     html.Div("Panel Type"),
     pan_eff_dropdown, 
     html.Br(),
-    savings_summary 
+    savings_summary, 
+    cost_summary 
 
     ],
     style={
@@ -80,7 +86,6 @@ app.layout = dbc.Container(
             [
                 dbc.Col(sidebar, md=4), 
                 dbc.Col(altair_chart, md=6)
-
             ]
         )
     

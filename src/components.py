@@ -109,16 +109,53 @@ ener_sav_card = dbc.Card(
     style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
 
-
-
 ## Savings
-savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Financial Savings'), dbc.CardBody('$XXX /year')]),
+#savings_card = dbc.Card(id='sav_card', children=[dbc.CardHeader('Financial Savings'), dbc.CardBody('$XXX /year')]),
+
+savings_card = dbc.Card(
+    id='sav_card',
+    children=[
+        dbc.CardHeader('Financial Savings',  style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+        dbc.CardBody(
+            [
+                html.H5('$XXX /year', style={"color": "steelblue"}),
+            ], 
+            style={"padding": "10px"})
+    ],
+    style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+)
 
 ## panel cost Card
-cost_card = dbc.Card(id='cost_card', children=[dbc.CardHeader('Panel Costs'), dbc.CardBody('$XXX')])
+cost_card = dbc.Card(
+    id='cost_card', 
+    children=[
+            dbc.CardHeader('Panel Costs', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+            dbc.CardBody(
+                [
+                html.H5('$XXX', style={"color": "steelblue"}),
+                ],
+                style={"padding": "10px"}
+                )
+        ], 
+        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+)
 
 ## Payback period Card
-payback_card = dbc.Card(id='payback_card', children=[dbc.CardHeader('Payback Period'), dbc.CardBody('X year')])
+#payback_card = dbc.Card(id='payback_card', children=[dbc.CardHeader('Payback Period'), dbc.CardBody('X year')])
+payback_card = dbc.Card(
+    id='payback_card', 
+    children=[
+            dbc.CardHeader('Payback Period', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+            dbc.CardBody(
+                [
+                html.H5('X year(s)', style={"color": "steelblue"}),
+                ],
+                 style={"padding": "10px"}
+                )
+        ], 
+        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+)
+
 
 ## Price information card
 highlight_province = province_dropdown
