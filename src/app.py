@@ -20,7 +20,7 @@ app.layout = dbc.Container([
                                   region_dropdown]),
                          roof_width_input,
                          roof_length_input,
-                         dbc.Row(["Panel Efficiency", pan_eff_dropdown]), 
+                         dbc.Row(["Panel Type", pan_eff_dropdown]), 
                          output_panel_count,
                          dbc.Row(["Number of Panels", num_pan_slider]), 
                          dbc.Row([
