@@ -4,7 +4,7 @@ import dash_vega_components as dvc
 import pandas as pd
 import altair as alt
 
-from data import alt_data, price_df, gdf_ca, panel_df
+from .data import alt_data, price_df, gdf_ca, panel_df
 
 # Components
 
@@ -42,10 +42,6 @@ num_pan_slider = html.Div(
     style={'background-color': 'white', 'margin-top': '10px'}
 )
 
-
-
-
-
 ## Panel Efficiency
 pan_eff_dropdown = dcc.Dropdown(id='panel_efficiency', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None)
 
@@ -64,7 +60,7 @@ background = alt.Chart(gdf_ca).mark_geoshape(
     stroke='white'
 ).project(
     type = 'transverseMercator',
-    rotate=[90, 0, 0], 
+    rotate=[90, 0, 0]
     # scale = scale, 
     # translate=translate
 ).properties(
@@ -82,11 +78,14 @@ points = alt.Chart(alt_data).mark_circle().encode(
     tooltip='Municipality:N',
     ).project(
         type = 'transverseMercator',
-        rotate=[90, 0, 0], 
+        rotate=[90, 0, 0]
         # scale = scale, 
         # translate=translate
     )
-combined_chart = background + points
+
+combined_chart = (background + points).configure_view(
+        clip=True
+    )
 
 altair_chart = (dvc.Vega(id="altair-chart",
                         opt={"renderer": "svg", "actions": False},
@@ -155,7 +154,6 @@ payback_card = dbc.Card(
         ], 
         style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
-
 
 ## Price information card
 highlight_province = province_dropdown
