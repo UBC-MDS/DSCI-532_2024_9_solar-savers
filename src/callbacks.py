@@ -9,9 +9,10 @@ from .data import alt_data, price_df, panel_df, gdf_ca
 @callback(
     Output('region_dropdown', 'options'),
     Output('altair-chart', 'spec'),
-    Input('province_dropdown', 'value')
+    Input('province_dropdown', 'value'),
+    Input('region_dropdown', 'value')
 )
-def update_region_dropdown(province_dropdown):
+def update_region_dropdown(province_dropdown, region_dropdown):
     if province_dropdown is None:
         background = alt.Chart(gdf_ca).mark_geoshape(
         fill='lightgray',
@@ -64,33 +65,43 @@ def update_region_dropdown(province_dropdown):
         scale = province_zoom[province_dropdown]["scale"]
         translate = province_zoom[province_dropdown]["translate"]
 
-        background = alt.Chart(gdf_ca).mark_geoshape(
+        background = alt.Chart(gdf_ca.query(f'name == "{province_dropdown}"')).mark_geoshape(
         fill='lightgray',
         stroke='white'
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            scale=scale, 
-            translate=translate
+            # scale=scale, 
+            # translate=translate
         ).properties(
             width=500,
             height=400
         )
 
-        points = alt.Chart(alt_data).mark_circle().encode(
+        points = alt.Chart(alt_data.query(f'Province == "{province_dropdown}"')).mark_circle().encode(
         longitude='longitude:Q', 
         latitude='latitude:Q',
-        color=alt.Color('South-facing with vertical (90 degrees) tilt',
-                        scale=alt.Scale(scheme="lighttealblue"),
-                        legend=alt.Legend(title='Solar Energy (kWh)')),     
-        size=alt.value(50),  
+        color=alt.condition(
+        alt.datum.Municipality == region_dropdown,  # Check if the name matches the dropdown
+        alt.value('red'),  # Color for true condition
+        alt.Color('South-facing with vertical (90 degrees) tilt',  # Field for false condition
+                  scale=alt.Scale(scheme="lighttealblue"),
+                  legend=alt.Legend(title='Solar Energy (kWh)'))
+    ),
+        size=alt.condition(
+        alt.datum.Municipality == region_dropdown,  # Check if the name matches the dropdown
+        alt.value(130),  # Color for true condition
+        alt.value(50)
+    ),
         tooltip='Municipality:N',
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            scale=scale, 
-            translate=translate
+            # scale=scale, 
+            # translate=translate
         )
+
+
         combined_chart = background + points
         return [{'label': region, 'value': region} for region in filtered_regions], combined_chart.to_dict()
 
