@@ -11,6 +11,7 @@ price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').so
 json_file_path = '../data/processed/kWh_poly.json'
 df1 = gpd.read_file(json_file_path)
 alt_data = df1.to_crs(epsg=4326)  
+alt_data = alt_data.dropna(subset=['latitude', 'longitude'])
 
 file_path = '../data/raw/ne_50m_admin_1_states_provinces/ne_50m_admin_1_states_provinces.shp'
 gdf1 = gpd.read_file(file_path)
