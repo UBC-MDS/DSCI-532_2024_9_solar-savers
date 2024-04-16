@@ -91,12 +91,12 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         alt.value(130),  # Color for true condition
         alt.value(50)
     ),
-        tooltip='Municipality:N',
+        tooltip=[alt.Tooltip('Municipality:N', title='Region'),
+                 alt.Tooltip('price per ¢/kWh', title='Electricity Cost (¢/kWh)'),
+                 alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')],
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         )
 
 
