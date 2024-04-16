@@ -5,7 +5,7 @@ import pandas as pd
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price per ¢/kWh', ascending=False)
+price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price', ascending=False)
 # sunlight_df = pd.read_json("../data/processed/kWh_poly.json", lines=True, encoding='latin1')
 
 json_file_path = '../data/processed/kWh_poly.json'
