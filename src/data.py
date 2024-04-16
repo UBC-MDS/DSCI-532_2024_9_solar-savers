@@ -16,6 +16,12 @@ alt_data = alt_data.dropna(subset=['latitude', 'longitude'])
 file_path = '../data/raw/ne_50m_admin_1_states_provinces/ne_50m_admin_1_states_provinces.shp'
 gdf1 = gpd.read_file(file_path)
 gdf_ca = gdf1[gdf1['iso_a2'] == 'CA']
+mapping = {
+    'Yukon': 'Yukon Territory',
+    'Québec': 'Quebec'
+}
+gdf_ca['name'] = gdf_ca['name'].replace(mapping)
+
 
 panel_file_path = '../data/raw/panels.csv'
 panel_df = pd.read_csv(panel_file_path)
