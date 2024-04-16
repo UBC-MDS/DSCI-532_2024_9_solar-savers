@@ -20,8 +20,6 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         ).properties(
             width=500,
             height=400
@@ -34,12 +32,12 @@ def update_region_dropdown(province_dropdown, region_dropdown):
                         scale=alt.Scale(scheme="lighttealblue"),
                         legend=alt.Legend(title='Solar Energy (kWh)')),     
         size=alt.value(50),  
-        tooltip='Municipality:N',
+        tooltip=[alt.Tooltip('Municipality:N', title='Region'),
+                 alt.Tooltip('price per ¢/kWh', title='Electricity Cost (¢/kWh)'),
+                 alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')] 
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         )
         combined_chart = background + points
 
