@@ -31,7 +31,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         latitude='latitude:Q',
         color=alt.Color('South-facing with vertical (90 degrees) tilt',
                         scale=alt.Scale(scheme="lighttealblue"),
-                        legend=alt.Legend(title='Insolation (kWh/m²)')),     
+                        legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)')),     
         size=alt.value(50),  
         tooltip=[alt.Tooltip('Municipality:N', title='Region'),
                  alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
@@ -84,7 +84,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         alt.value('red'),  # Color for true condition
         alt.Color('South-facing with vertical (90 degrees) tilt',  # Field for false condition
                   scale=alt.Scale(scheme="lighttealblue"),
-                  legend=alt.Legend(title='Insolation (kWh/m²)'))
+                  legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)'))
     ),
         size=alt.condition(
         alt.datum.Municipality == region_dropdown,  # Check if the name matches the dropdown
