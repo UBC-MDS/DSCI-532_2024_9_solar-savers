@@ -19,6 +19,7 @@ title = html.H1(
 }
 )
 
+
 # SIDE BAR WIDGETS
 # Roof Dimensions (for sidebar)
 roof_dimensions = dbc.Row(
@@ -88,9 +89,16 @@ bottombar = dbc.Row(
 )
 
 # MAIN APP LAYOUT
-app.layout = dbc.Container(
-    [
-        dbc.Row(dbc.Col(title)),
+app.layout = dbc.Container([
+        dbc.Row([
+
+                dbc.Col(title), dbc.Col(html.Div(info_button), className="text-right", width="auto", style={'background-color': 'transparent'})
+            ], 
+            style={'background-color':'steelblue'}
+            ),
+        dbc.Row(
+            dbc.Col(info_section, style={"margin-top": "4px"})
+        ),
         dbc.Row(
             [
                 dbc.Col(sidebar, md=4),
