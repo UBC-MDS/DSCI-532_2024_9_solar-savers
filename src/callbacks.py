@@ -1,4 +1,4 @@
-from dash import callback, Output, Input
+from dash import callback, Output, Input, State
 import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
@@ -253,3 +253,16 @@ def calculate_max_panels(roof_width, roof_length):
         max_fit = max_rectangles_with_residual(roof_width, roof_length, panel_width, panel_length)
         return f'Maximum panels for your roof: {max_fit}'
     return 'Maximum panels for your roof:'
+
+# Dropdown button for information
+@callback(
+    Output("info", "is_open"),
+    [Input("info-button", "n_clicks")],
+    [State("info", "is_open")],  
+)
+def toggle_button(n, is_open):
+    print(n)  
+    print(is_open)  
+    if n:
+        return not is_open
+    return is_open
