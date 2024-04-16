@@ -22,7 +22,8 @@ def update_region_dropdown(province_dropdown, region_dropdown):
             rotate=[90, 0, 0], 
         ).properties(
             width=500,
-            height=400
+            height=400, 
+            title = "Solar Energy Potential Across Canadian Regions"
         )
         
         points = alt.Chart(alt_data).mark_circle().encode(
@@ -30,7 +31,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         latitude='latitude:Q',
         color=alt.Color('South-facing with vertical (90 degrees) tilt',
                         scale=alt.Scale(scheme="lighttealblue"),
-                        legend=alt.Legend(title='Solar Energy (kWh)')),     
+                        legend=alt.Legend(title='Insolation (kWh/m²)')),     
         size=alt.value(50),  
         tooltip=[alt.Tooltip('Municipality:N', title='Region'),
                  alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
@@ -69,11 +70,10 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         ).properties(
             width=500,
-            height=400
+            height=400, 
+            title = "Solar Energy Potential Across Canadian Regions"
         )
 
         points = alt.Chart(alt_data.query(f'Province == "{province_dropdown}"')).mark_circle().encode(
@@ -84,7 +84,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         alt.value('red'),  # Color for true condition
         alt.Color('South-facing with vertical (90 degrees) tilt',  # Field for false condition
                   scale=alt.Scale(scheme="lighttealblue"),
-                  legend=alt.Legend(title='Solar Energy (kWh)'))
+                  legend=alt.Legend(title='Insolation (kWh/m²)'))
     ),
         size=alt.condition(
         alt.datum.Municipality == region_dropdown,  # Check if the name matches the dropdown
@@ -166,7 +166,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
                     comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
                 diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
                 card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
-
 
             return card_ener, card_sav, card_cost, card_payback, card_diff
     return card_ener, card_sav, card_cost, card_payback, card_diff
