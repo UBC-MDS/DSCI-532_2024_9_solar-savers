@@ -33,7 +33,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
                         legend=alt.Legend(title='Solar Energy (kWh)')),     
         size=alt.value(50),  
         tooltip=[alt.Tooltip('Municipality:N', title='Region'),
-                 alt.Tooltip('price per ¢/kWh', title='Electricity Cost (¢/kWh)'),
+                 alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
                  alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')] 
         ).project(
             type='transverseMercator',
@@ -92,7 +92,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         alt.value(50)
     ),
         tooltip=[alt.Tooltip('Municipality:N', title='Region'),
-                 alt.Tooltip('price per ¢/kWh', title='Electricity Cost (¢/kWh)'),
+                 alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
                  alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')],
         ).project(
             type='transverseMercator',
@@ -145,7 +145,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     ]
 
     if province and region:
-        province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
+        province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
@@ -188,7 +188,7 @@ def create_chart(panel_comparison, province, region, num_pan):
         #     "Premium > 22%": 0.25
         # }
     if province and region:
-        province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
+        province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             if panel_comparison and len(panel_comparison) >= 1:
