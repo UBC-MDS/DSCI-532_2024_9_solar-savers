@@ -1,4 +1,4 @@
-from dash import callback, Output, Input
+from dash import callback, Output, Input, State
 import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
@@ -20,11 +20,10 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         ).properties(
             width=500,
-            height=400
+            height=400, 
+            title = "Solar Energy Potential Across Canadian Regions"
         )
         
         points = alt.Chart(alt_data).mark_circle().encode(
@@ -32,14 +31,14 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         latitude='latitude:Q',
         color=alt.Color('South-facing with vertical (90 degrees) tilt',
                         scale=alt.Scale(scheme="lighttealblue"),
-                        legend=alt.Legend(title='Solar Energy (kWh)')),     
+                        legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)')),     
         size=alt.value(50),  
-        tooltip='Municipality:N',
+        tooltip=[alt.Tooltip('Municipality:N', title='Region'),
+                 alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
+                 alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')] 
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         )
         combined_chart = background + points
 
@@ -71,11 +70,10 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         ).properties(
             width=500,
-            height=400
+            height=400, 
+            title = "Solar Energy Potential Across Canadian Regions"
         )
 
         points = alt.Chart(alt_data.query(f'Province == "{province_dropdown}"')).mark_circle().encode(
@@ -86,19 +84,19 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         alt.value('red'),  # Color for true condition
         alt.Color('South-facing with vertical (90 degrees) tilt',  # Field for false condition
                   scale=alt.Scale(scheme="lighttealblue"),
-                  legend=alt.Legend(title='Solar Energy (kWh)'))
+                  legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)'))
     ),
         size=alt.condition(
         alt.datum.Municipality == region_dropdown,  # Check if the name matches the dropdown
         alt.value(130),  # Color for true condition
         alt.value(50)
     ),
-        tooltip='Municipality:N',
+        tooltip=[alt.Tooltip('Municipality:N', title='Region'),
+                 alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
+                 alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')],
         ).project(
             type='transverseMercator',
             rotate=[90, 0, 0], 
-            # scale=scale, 
-            # translate=translate
         )
 
 
@@ -147,7 +145,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     ]
 
     if province and region:
-        province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
+        province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
@@ -169,7 +167,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
                 diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
                 card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
 
-
             return card_ener, card_sav, card_cost, card_payback, card_diff
     return card_ener, card_sav, card_cost, card_payback, card_diff
 
@@ -190,7 +187,7 @@ def create_chart(panel_comparison, province, region, num_pan):
         #     "Premium > 22%": 0.25
         # }
     if province and region:
-        province_price = price_df[(price_df['province'] == province)]["price per ¢/kWh"].iloc[0] / 100
+        province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             if panel_comparison and len(panel_comparison) >= 1:
@@ -256,3 +253,16 @@ def calculate_max_panels(roof_width, roof_length):
         max_fit = max_rectangles_with_residual(roof_width, roof_length, panel_width, panel_length)
         return f'Maximum panels for your roof: {max_fit}'
     return 'Maximum panels for your roof:'
+
+# Dropdown button for information
+@callback(
+    Output("info", "is_open"),
+    [Input("info-button", "n_clicks")],
+    [State("info", "is_open")],  
+)
+def toggle_button(n, is_open):
+    print(n)  
+    print(is_open)  
+    if n:
+        return not is_open
+    return is_open
