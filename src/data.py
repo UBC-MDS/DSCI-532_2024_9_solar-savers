@@ -5,13 +5,18 @@ import pandas as pd
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price per ¢/kWh', ascending=False)
+price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price', ascending=False)
 # sunlight_df = pd.read_json("../data/processed/kWh_poly.json", lines=True, encoding='latin1')
 
 json_file_path = '../data/processed/kWh_poly.json'
 df1 = gpd.read_file(json_file_path)
 alt_data = df1.to_crs(epsg=4326)  
 alt_data = alt_data.dropna(subset=['latitude', 'longitude'])
+
+# merge price_df with alt_data
+alt_data = pd.merge(alt_data, price_df, how='left', left_on='Province', right_on='province')
+alt_data.drop(columns='province', inplace=True)
+
 
 file_path = '../data/raw/ne_50m_admin_1_states_provinces/ne_50m_admin_1_states_provinces.shp'
 gdf1 = gpd.read_file(file_path)

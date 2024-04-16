@@ -1,11 +1,13 @@
-from dash import Dash
+from dash import Dash, html
 import dash_bootstrap_components as dbc
 
 from components import (
     title,
     sidebar,
     altair_chart,
-    bottombar
+    bottombar,
+    info_section,
+    info_button
 )
 
 # Initiatlizion
@@ -14,9 +16,16 @@ server = app.server
 
 
 # MAIN APP LAYOUT
-app.layout = dbc.Container(
-    [
-        dbc.Row(dbc.Col(title)),
+app.layout = dbc.Container([
+        dbc.Row([
+
+                dbc.Col(title), dbc.Col(html.Div(info_button), className="text-right", width="auto", style={'background-color': 'transparent'})
+            ], 
+            style={'background-color':'steelblue'}
+            ),
+        dbc.Row(
+            dbc.Col(info_section, style={"margin-top": "4px"})
+        ),
         dbc.Row(
             [
                 dbc.Col(sidebar, md=4),

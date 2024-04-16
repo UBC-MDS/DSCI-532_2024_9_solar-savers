@@ -5,7 +5,37 @@ import altair as alt
 
 from data import alt_data, price_df, gdf_ca, panel_df
 
-# Components
+# Description & Explanation
+app_info = [
+    html.P(
+        "Welcome to Solar Savers! Our app is crafted to empower Canadian homeowners (like, you!) with the knowledge to make well-informed decisions when considering the purchase of solar panels.", style={'font-size': '16px'}
+    ),
+    html.Br(),
+    html.P(
+        "Begin your journey by selecting your province or territory, then specify your region. Optionally, input your roof dimensions to calculate the maximum number of solar panels for your home. Select a panel type, then see your energy and financial savings soar!", style={'font-size': '16px'}
+    ), 
+    html.P("Explore the map to visualize the amount of insolation (solar energy received per square meter of land) and electricity costs in different regions. Can't decide on a panel type? Utilize the panel comparison widget at the bottom to help you decide. ", style={'font-size': '16px'})
+]
+
+info_button = dbc.Button(
+    "Click here!",
+    id="info-button",
+    outline=False,
+    style={
+        'width': '150px',
+        'background-color': 'white',
+        'color': 'steelblue',
+        'margin-top': 4,
+    }
+)
+
+info_section = dbc.Collapse(
+        app_info,
+    id="info",
+    style ={'background-color':'white', 
+            'padding': 10}
+)
+
 
 # Title
 title = html.H1(
