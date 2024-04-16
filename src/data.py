@@ -13,6 +13,11 @@ df1 = gpd.read_file(json_file_path)
 alt_data = df1.to_crs(epsg=4326)  
 alt_data = alt_data.dropna(subset=['latitude', 'longitude'])
 
+# merge price_df with alt_data
+alt_data = pd.merge(alt_data, price_df, how='left', left_on='Province', right_on='province')
+alt_data.drop(columns='province', inplace=True)
+
+
 file_path = '../data/raw/ne_50m_admin_1_states_provinces/ne_50m_admin_1_states_provinces.shp'
 gdf1 = gpd.read_file(file_path)
 gdf_ca = gdf1[gdf1['iso_a2'] == 'CA']
