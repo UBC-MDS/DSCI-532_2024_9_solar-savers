@@ -4,11 +4,13 @@ channels:
     - defaults
 dependencies:
     - ipykernel
+    - pyarrow
     - altair-all
     - dash
     - dash-bootstrap-components
     - plotly
     - pip
+    - urllib3
     - matplotlib
     - geopandas
     - pip:
