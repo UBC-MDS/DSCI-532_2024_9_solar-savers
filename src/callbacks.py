@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
 
-from data import alt_data, price_df, panel_df, gdf_ca
+from .data import alt_data, price_df, panel_df, gdf_ca
 
 # Callbacks and Reactivity
 @callback(

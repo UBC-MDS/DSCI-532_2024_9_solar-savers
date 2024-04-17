@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 import dash_vega_components as dvc
 import altair as alt
 
-from data import alt_data, price_df, gdf_ca, panel_df
+from .data import alt_data, price_df, gdf_ca, panel_df
 
 # Description & Explanation
 app_info = [
