@@ -7,7 +7,7 @@ from shapely import wkb
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
-price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price per ¢/kWh', ascending=False)
+price_df = pd.read_csv("../data/raw/pricePerProvince.csv", encoding='latin1').sort_values(by='price', ascending=False)
 alt_data = pd.read_parquet('../data/processed/kWh_poly.parquet')
 alt_data['geometry'] = alt_data['geometry'].apply(wkb.loads)
 alt_data = gpd.GeoDataFrame(alt_data)
