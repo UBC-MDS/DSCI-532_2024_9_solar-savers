@@ -9,7 +9,7 @@ from .data import alt_data, price_df, panel_df, gdf_ca
 @callback(
     Output('region_dropdown', 'options'),
     Output('altair-chart', 'spec'),
-    Output('bars', 'spec'),
+    # Output('bars', 'spec'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value')
 )
@@ -43,7 +43,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         )
         combined_chart = background + points
 
-        return [], combined_chart.to_dict(), {}
+        return [], combined_chart.to_dict()#, {}
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
       
