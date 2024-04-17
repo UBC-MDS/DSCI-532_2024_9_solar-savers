@@ -233,7 +233,6 @@ def calculate_max_panels(roof_width, roof_length, selected_panel_type, current_m
 
     # Return the initial slider max if inputs are not valid
     return current_max  # or `no_update` if you prefer not to reset to a default
-
 # Dropdown button for information
 @callback(
     Output("info", "is_open"),
