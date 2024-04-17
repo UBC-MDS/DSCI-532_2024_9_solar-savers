@@ -157,6 +157,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     Input('num_pan_slider', 'value'),
 )
 def create_chart(panel_comparison, province, region, num_pan):
+    # conversion_df = pd.DataFrame(list(conversion_rate.items()), columns=['name', 'efficiency'])
     if panel_comparison:
         conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     if province and region:
@@ -164,41 +165,41 @@ def create_chart(panel_comparison, province, region, num_pan):
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             if panel_comparison and len(panel_comparison) >= 1:
-                conversion_df['highlight'] = conversion_df['name'].isin(panel_comparison)
+                # conversion_df['highlight'] = conversion_df['name'].isin(panel_comparison)
                 comparison_values = [conversion_rate[value] for value in panel_comparison]
                 comparison_savings = []
                 for value in comparison_values:
                     comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan * province_price)
                 df = pd.DataFrame({comp: [saving] for comp, saving in zip(panel_comparison, comparison_savings)})
                 df = df.T.reset_index().rename(columns={'index': 'Panel Comparison', 0: 'Savings'})
-                return(
-                    alt.Chart(conversion_df).mark_bar().encode(
-                            y=alt.Y('name:N', title='Panel Name', sort='-x'), 
-                            x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
-                            color=alt.Color('highlight:N', scale=alt.Scale(domain=[True, False], range=['gold', 'steelblue']), legend=None),  
-                            tooltip=['name', 'efficiency']  
-                        ).properties(
-                            title='Panel Efficiency Comparison'
-                        ).interactive().to_dict()
-                )
                 # return(
-                #     alt.Chart(df).mark_bar().encode(
-                #             y=alt.Y('Panel Comparison', title='Efficiency', sort='-x'),
-                #             x=alt.X('Savings', title='Savings ($/yr)', stack=None)                            
+                #     alt.Chart(conversion_df).mark_bar().encode(
+                #             y=alt.Y('name:N', title='Panel Name', sort='-x'), 
+                #             x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
+                #             color=alt.Color('highlight:N', scale=alt.Scale(domain=[True, False], range=['gold', 'steelblue']), legend=None),  
+                #             tooltip=['name', 'efficiency']  
                 #         ).properties(
-                #             title = 'Panel Comparison'
+                #             title='Panel Efficiency Comparison'
                 #         ).interactive().to_dict()
                 # )
-            else:(
-                alt.Chart(conversion_df).mark_bar().encode(
-                        y=alt.Y('name:N', title='Panel Name', sort='-x'), 
-                        x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
-                        color=alt.value('steelblue'),  
-                        tooltip=['name', 'efficiency']  
-                    ).properties(
-                        title='Panel Efficiency Comparison'
-                    ).interactive().to_dict()
-            )
+                return(
+                    alt.Chart(df).mark_bar().encode(
+                            y=alt.Y('Panel Comparison', title='Efficiency', sort='-x'),
+                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)                            
+                        ).properties(
+                            title = 'Panel Comparison'
+                        ).interactive().to_dict()
+                )
+            # else:(
+            #     alt.Chart(conversion_df).mark_bar().encode(
+            #             y=alt.Y('name:N', title='Panel Name', sort='-x'), 
+            #             x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
+            #             color=alt.value('steelblue'),  
+            #             tooltip=['name', 'efficiency']  
+            #         ).properties(
+            #             title='Panel Efficiency Comparison'
+            #         ).interactive().to_dict()
+            # )
     else:
         return {}
     
