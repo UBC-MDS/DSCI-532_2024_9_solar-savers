@@ -21,20 +21,21 @@ app.layout = dbc.Container([
 
                 dbc.Col(title), dbc.Col(html.Div(info_button), className="text-right", width="auto", style={'background-color': 'transparent'})
             ], 
-            style={'background-color':'steelblue'}
+            style={'background-color':'#FCAE1E'}
             ),
         dbc.Row(
-            dbc.Col(info_section, style={"margin-top": "4px"})
+            dbc.Col(info_section, style={"margin-top": "0px"})
         ),
         dbc.Row(
             [
                 dbc.Col(sidebar, md=4),
-                dbc.Col(altair_chart, md=6)
+                dbc.Col(altair_chart, md=8)
             ],
         ), 
         bottombar
     ],
-    style={'margin': 0, 'padding': 0}
+    fluid=True,
+    style={'margin': 0, 'padding': 0, 'overflow-x': 'hidden'}
 )
 
 # Run the app/dashboard

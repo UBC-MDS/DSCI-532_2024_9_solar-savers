@@ -24,7 +24,7 @@ info_button = dbc.Button(
     style={
         'width': '150px',
         'background-color': 'white',
-        'color': 'steelblue',
+        'color': '#FCAE1E',
         'margin-top': 4,
     }
 )
@@ -41,9 +41,10 @@ info_section = dbc.Collapse(
 title = html.H1(
     ' Solar Savers',
     style={
-        'backgroundColor': 'steelblue',
+        'backgroundColor': '#FCAE1E',
         'color': 'white',
         'font-size': '48px',
+        'margin' : '0'
 }
 )
 
@@ -242,14 +243,14 @@ sidebar = dbc.Col(
         province_dropdown,
         region_dropdown,
         html.Br(),
+        html.Div("Panel Type"),
+        pan_eff_dropdown,
+        html.Br(),
         html.Div("Roof Dimensions"),
         roof_dimensions, 
         html.Br(),
         html.Div("Number of Panels"),
         num_pan_slider,
-        html.Br(),
-        html.Div("Panel Type"),
-        pan_eff_dropdown, 
         html.Br(),
         savings_summary, 
         cost_summary 
@@ -268,7 +269,7 @@ bottombar = dbc.Row(
         dbc.Col(diff_sav_card)     
     ], 
     style={
-        'background-color': 'rgba(173, 216, 230, 0.7)',
+        'background-color': '#F9DDB1',
         'padding': 10
     }
 )
