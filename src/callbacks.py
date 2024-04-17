@@ -19,7 +19,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         stroke='white'
         ).project(
             type='transverseMercator',
-            rotate=[90, 0, 0], 
+            rotate=[90, 0, 0]
         ).properties(
             width=500,
             height=400, 
@@ -38,7 +38,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
                  alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')] 
         ).project(
             type='transverseMercator',
-            rotate=[90, 0, 0], 
+            rotate=[90, 0, 0]
         )
         combined_chart = background + points
 
@@ -46,30 +46,12 @@ def update_region_dropdown(province_dropdown, region_dropdown):
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
       
-        province_zoom = {'British Columbia': {'scale': 1200, 'translate': [660, 1460]}, 
-                'Alberta': {'scale': 1680, 'translate': [644, 1876]}, 
-                'Saskatchewan':{'scale': 1736, 'translate': [523, 1890]}, 
-                'Manitoba':{'scale': 1736, 'translate': [378, 1862]},
-                'Ontario':{'scale': 1484, 'translate': [168, 1470]}, 
-                'Quebec': {'scale': 1113, 'translate': [10.5, 1260]}, 
-                'Northwest Territories': {'scale': 1220, 'translate': [520,1640]}, 
-                'Yukon Territory': {'scale': 1240, 'translate': [600, 1720]},
-                'Nunavut': {'scale': 880, 'translate':[260, 1320]}, 
-                'New Brunswick': {'scale': 1480, 'translate': [-200, 1400]}, 
-                'Nova Scotia': {'scale': 1480, 'translate': [-200, 1400]}, 
-                'Prince Edward Island': {'scale': 1480, 'translate': [-200, 1400]}, 
-                'Newfoundland and Labrador': {'scale': 1160, 'translate': [-140, 1320]}
-                }
-
-        scale = province_zoom[province_dropdown]["scale"]
-        translate = province_zoom[province_dropdown]["translate"]
-
         background = alt.Chart(gdf_ca.query(f'name == "{province_dropdown}"')).mark_geoshape(
         fill='lightgray',
         stroke='white'
         ).project(
             type='transverseMercator',
-            rotate=[90, 0, 0], 
+            rotate=[90, 0, 0]
         ).properties(
             width=500,
             height=400, 
@@ -96,7 +78,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
                  alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')],
         ).project(
             type='transverseMercator',
-            rotate=[90, 0, 0], 
+            rotate=[90, 0, 0]
         )
 
 
@@ -152,9 +134,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
             card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/year')])
             card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/year')])
 
-            # card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
-            # card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
-
         if efficiency:
             card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
             card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
@@ -167,7 +146,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
                 diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
                 card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
 
-            return card_ener, card_sav, card_cost, card_payback, card_diff
     return card_ener, card_sav, card_cost, card_payback, card_diff
 
 @callback(
@@ -180,12 +158,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
 def create_chart(panel_comparison, province, region, num_pan):
     if panel_comparison:
         conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
-        # conversion_rate = {
-        #     "Low < 15%": 0.15,
-        #     "Standard 15-18%": 0.18,
-        #     "High 18-22%": 0.22,
-        #     "Premium > 22%": 0.25
-        # }
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
