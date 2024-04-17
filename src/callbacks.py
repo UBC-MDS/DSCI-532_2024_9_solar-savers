@@ -9,7 +9,6 @@ from .data import alt_data, price_df, panel_df, gdf_ca
 @callback(
     Output('region_dropdown', 'options'),
     Output('altair-chart', 'spec'),
-    # Output('bars', 'spec'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value')
 )
@@ -43,7 +42,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         )
         combined_chart = background + points
 
-        return [], combined_chart.to_dict()#, {}
+        return [], combined_chart.to_dict()
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
       
@@ -151,84 +150,35 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
 
 @callback(
     Output('bars', 'spec'),
-    Output('diff_card', 'children'),
     Input('panel_comparison', 'value'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value'),
     Input('num_pan_slider', 'value'),
-    Input('province_dropdown', 'value'),
-    Input('region_dropdown', 'value')
 )
 def create_chart(panel_comparison, province, region, num_pan):
-    if province and region:
-        card_diff = [
-            dbc.CardHeader('Difference in Savings'),
-            dbc.CardBody('$XXX/yr')
-        ]
-    else:
-        card_diff = [
-            dbc.CardHeader('Difference in Savings'),
-            dbc.CardBody('(Please select at least two panels)')
-        ]
-    
-    conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
-    conversion_df = pd.DataFrame(list(conversion_rate.items()), columns=['name', 'efficiency'])
+    if panel_comparison:
+        conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             if panel_comparison and len(panel_comparison) >= 1:
-                conversion_df['highlight'] = conversion_df['name'].isin(panel_comparison)
                 comparison_values = [conversion_rate[value] for value in panel_comparison]
                 comparison_savings = []
                 for value in comparison_values:
                     comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan * province_price)
                 df = pd.DataFrame({comp: [saving] for comp, saving in zip(panel_comparison, comparison_savings)})
                 df = df.T.reset_index().rename(columns={'index': 'Panel Comparison', 0: 'Savings'})
-                diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
-                card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
                 return(
-                    alt.Chart(conversion_df).mark_bar().encode(
-                            y=alt.Y('name:N', title='Panel Name', sort='-x'), 
-                            x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
-                            color=alt.Color('highlight:N', scale=alt.Scale(domain=[True, False], range=['gold', 'steelblue']), legend=None),  
-                            tooltip=['name', 'efficiency']  
+                    alt.Chart(df).mark_bar().encode(
+                            y=alt.Y('Panel Comparison', title='Efficiency', sort='-x'),
+                            x=alt.X('Savings', title='Savings ($/yr)', stack=None)                            
                         ).properties(
-                            title='Panel Efficiency Comparison'
+                            title = 'Panel Comparison'
                         ).interactive().to_dict()
-                ), card_diff
-                # return(
-                #     alt.Chart(df).mark_bar().encode(
-                #             y=alt.Y('Panel Comparison', title='Efficiency', sort='-x'),
-                #             x=alt.X('Savings', title='Savings ($/yr)', stack=None)                            
-                #         ).properties(
-                #             title = 'Panel Comparison'
-                #         ).interactive().to_dict()
-                # )
-            else:
-                conversion_df = pd.DataFrame(list(conversion_rate.items()), columns=['name', 'efficiency'])
-                return (
-                alt.Chart(conversion_df).mark_bar().encode(
-                        y=alt.Y('name:N', title='Panel Name', sort='-x'), 
-                        x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
-                        color=alt.value('steelblue'),  
-                        tooltip=['name', 'efficiency']  
-                    ).properties(
-                        title='Panel Efficiency Comparison'
-                    ).interactive().to_dict()
-            ), card_diff
+                )
     else:
-        conversion_df = pd.DataFrame(list(conversion_rate.items()), columns=['name', 'efficiency'])
-        return (
-                alt.Chart(conversion_df).mark_bar().encode(
-                        y=alt.Y('name:N', title='Panel Name', sort='-x'), 
-                        x=alt.X('efficiency:Q', title='Efficiency', scale=alt.Scale(domain=(0, 0.25))),  
-                        color=alt.value('steelblue'),  
-                        tooltip=['name', 'efficiency']  
-                    ).properties(
-                        title='Panel Efficiency Comparison'
-                    ).interactive().to_dict()
-            ), card_diff
+        return {}
     
 def max_rectangles_with_residual(a, b, x, y):
     # First orientation
