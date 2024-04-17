@@ -91,6 +91,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
     Output('sav_card', 'children'),
     Output('cost_card', 'children'),
     Output('payback_card', 'children'),
+    Output('diff_card', 'children'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value'),
     Input('panel_efficiency', 'value'),
@@ -111,6 +112,11 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         dbc.CardBody('$XXX/yr')
     ]
     
+    card_diff = [
+        dbc.CardHeader('Difference in Savings'),
+        dbc.CardBody('$XXX/yr')
+    ]
+
     card_cost = [
         dbc.CardHeader('Panel Costs'),
         dbc.CardBody('$XXX')
@@ -119,11 +125,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     card_payback = [
         dbc.CardHeader('Payback Period'),
         dbc.CardBody('X year')
-    ]
-
-    card_diff = [
-        dbc.CardHeader('Difference in Savings'),
-        dbc.CardBody('(Please select Province and Region)')
     ]
 
     if province and region:
