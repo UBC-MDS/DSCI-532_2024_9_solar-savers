@@ -1,4 +1,4 @@
-from dash import callback, Output, Input, State
+from dash import callback, Output, Input, State, no_update
 import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
@@ -30,7 +30,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         longitude='longitude:Q', 
         latitude='latitude:Q',
         color=alt.Color('South-facing with vertical (90 degrees) tilt',
-                        scale=alt.Scale(scheme="lighttealblue"),
+                        scale=alt.Scale(scheme="oranges"),
                         legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)')),     
         size=alt.value(50),  
         tooltip=[alt.Tooltip('Municipality:N', title='Region'),
@@ -65,7 +65,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         alt.datum.Municipality == region_dropdown,  # Check if the name matches the dropdown
         alt.value('red'),  # Color for true condition
         alt.Color('South-facing with vertical (90 degrees) tilt',  # Field for false condition
-                  scale=alt.Scale(scheme="lighttealblue"),
+                  scale=alt.Scale(scheme="oranges"),
                   legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)'))
     ),
         size=alt.condition(
@@ -208,23 +208,31 @@ def max_rectangles_with_residual(a, b, x, y):
     # Return the maximum of the two orientations considering the residual spaces
     return max(total_with_residual_first, total_with_residual_second)
     
-panel_df['length_m'] = panel_df['length (mm) '] / 1000
-panel_df['width_m'] = panel_df['width (mm)'] / 1000
-
-# Assume that your CSV has a single type of panel, otherwise, you'll need to handle multiple types.
-panel_length = panel_df['length_m'].iloc[0]
-panel_width = panel_df['width_m'].iloc[0]
-
 @callback(
-    Output('output-panel-count', 'children'),
-    [Input('input-roof-width', 'value'),
-     Input('input-roof-length', 'value')]
+    Output('num_pan_slider', 'max'),  # Only update the slider's max property
+    [
+        Input('input-roof-width', 'value'),
+        Input('input-roof-length', 'value'),
+        Input('panel_efficiency', 'value')
+    ],
+    [
+        State('num_pan_slider', 'max')  # Retrieves the current max value of the slider
+    ]
 )
-def calculate_max_panels(roof_width, roof_length):
-    if roof_width is not None and roof_length is not None and roof_width > 0 and roof_length > 0:
+def calculate_max_panels(roof_width, roof_length, selected_panel_type, current_max):
+    if roof_width is not None and roof_length is not None and selected_panel_type is not None and roof_width > 0 and roof_length > 0:
+        panel_length = panel_df[panel_df['name '] == selected_panel_type]['length_m'].iloc[0]
+        panel_width = panel_df[panel_df['name '] == selected_panel_type]['width_m'].iloc[0]
+
         max_fit = max_rectangles_with_residual(roof_width, roof_length, panel_width, panel_length)
-        return f'Maximum panels for your roof: {max_fit}'
-    return 'Maximum panels for your roof:'
+
+        # Update the slider max only if the new calculation differs from the current max
+        if max_fit != current_max:
+            return max_fit  # Only return the new max value for the slider
+        return no_update  # Do not update the slider max if it hasn't changed
+
+    # Return the initial slider max if inputs are not valid
+    return current_max  # or `no_update` if you prefer not to reset to a default
 
 # Dropdown button for information
 @callback(

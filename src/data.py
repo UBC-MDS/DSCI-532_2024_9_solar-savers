@@ -12,3 +12,5 @@ alt_data['geometry'] = alt_data['geometry'].apply(wkb.loads)
 alt_data = gpd.GeoDataFrame(alt_data)
 gdf_ca = gpd.read_parquet('../data/processed/ne_50m_admin_1_states_provinces.parquet')
 panel_df = pd.read_csv('../data/raw/panels.csv')
+panel_df['length_m'] = panel_df['length (mm) '] / 1000
+panel_df['width_m'] = panel_df['width (mm)'] / 1000
