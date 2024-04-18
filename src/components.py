@@ -88,28 +88,31 @@ comparison_graph = dvc.Vega(id='bars', spec={})
 
 ## Altair Chart
 background = alt.Chart(gdf_ca).mark_geoshape(
-    fill='lightgray',
-    stroke='white'
+fill='lightgray',
+stroke='white'
 ).project(
-    type = 'transverseMercator',
+    type='transverseMercator',
     rotate=[90, 0, 0]
 ).properties(
     width=500,
-    height=400
+    height=400, 
+    title = "Solar Energy Potential Across Canadian Regions"
 )
 
 points = alt.Chart(alt_data).mark_circle().encode(
-    longitude='longitude:Q', 
-    latitude='latitude:Q',
-    color=alt.Color('South-facing with vertical (90 degrees) tilt',
-                    scale=alt.Scale(scheme="lighttealblue"),
-                    legend=alt.Legend(title='Solar Energy (kWh)')),     
-    size=alt.value(50),  
-    tooltip='Municipality:N',
-    ).project(
-        type = 'transverseMercator',
-        rotate=[90, 0, 0]
-    )
+longitude='longitude:Q', 
+latitude='latitude:Q',
+color=alt.Color('South-facing with vertical (90 degrees) tilt',
+                scale=alt.Scale(scheme="oranges"),
+                legend=alt.Legend(title='Mean Daily Insolation (kWh/m²)')),     
+size=alt.value(50),  
+tooltip=[alt.Tooltip('Municipality:N', title='Region'),
+            alt.Tooltip('price', title='Electricity Cost (¢/kWh)'),
+            alt.Tooltip('South-facing with vertical (90 degrees) tilt', title='Insolation (kWh/m²)')] 
+).project(
+    type='transverseMercator',
+    rotate=[90, 0, 0]
+)
 
 combined_chart = (background + points).configure_view(
         clip=True
