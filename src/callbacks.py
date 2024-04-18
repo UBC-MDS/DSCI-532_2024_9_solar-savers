@@ -275,7 +275,7 @@ def generate_altair_chart(province_dropdown, region_dropdown):
         latitude='latitude:Q',
         color=alt.condition(
             alt.datum.Municipality == region_dropdown,
-            alt.value('red'),
+            alt.value('blue'),
             alt.Color(
                 'South-facing with vertical (90 degrees) tilt',
                 scale=alt.Scale(scheme="oranges"),
