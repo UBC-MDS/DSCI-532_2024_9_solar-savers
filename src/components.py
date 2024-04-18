@@ -24,8 +24,9 @@ info_button = dbc.Button(
     style={
         'width': '150px',
         'background-color': 'white',
-        'color': '#FCAE1E',
-        'margin-top': 4,
+
+        'color': '#FCAE1E'
+
     }
 )
 
@@ -36,7 +37,6 @@ info_section = dbc.Collapse(
             'padding': 10}
 )
 
-
 # Title
 title = html.H1(
     ' Solar Savers',
@@ -44,7 +44,10 @@ title = html.H1(
         'backgroundColor': '#FCAE1E',
         'color': 'white',
         'font-size': '48px',
-        'margin' : '0'
+        'margin' : '0',
+        'padding-left': '10px', 
+        'padding-right': '10px'
+
 }
 )
 
@@ -68,7 +71,7 @@ num_pan_slider = html.Div(
         marks={0: '0', 20: '20'},
         tooltip={'always_visible': True, 'placement': 'top'}
     ),
-    style={'background-color': 'white', 'margin-top': '10px'}
+    style={'background-color': '#e6e6e6', 'margin-top': '10px'}
 )
 
 ## Panel Efficiency
@@ -210,13 +213,12 @@ output_panel_count = dbc.Row(
 # Roof Dimensions (for sidebar)
 roof_dimensions = dbc.Row(
     [
-        dbc.Col(roof_length_input), dbc.Col(roof_width_input), 
-        output_panel_count
+        dbc.Col(roof_length_input, width=6, style={'margin-right': 0, 'padding-right': 0}), 
+        dbc.Col(roof_width_input, width=6, style={'margin-right': 0, 'padding-right': 0})
     ], 
     style={
-        'background-color': 'white',
-        'padding': 7,
-        'border-radius': 3
+        'background-color': '#e6e6e6',
+        'margin-left': 0, 'margin-right': 0
     })
 # Savings Summary
 savings_summary = dbc.Row(
