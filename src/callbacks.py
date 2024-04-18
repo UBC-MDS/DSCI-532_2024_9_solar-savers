@@ -110,7 +110,7 @@ def create_chart(panel_comparison, province, region, num_pan):
     if panel_comparison:
         conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     else:
-        return {}
+        return create_empty_chart()
     
     if province is not None and region is not None:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
@@ -133,7 +133,7 @@ def create_chart(panel_comparison, province, region, num_pan):
                 )
     else:
         
-        return {}
+        return create_empty_chart()
     
 def max_rectangles_with_residual(a, b, x, y):
     # First orientation
@@ -333,3 +333,25 @@ def toggle_panel_comparison_options(selected_panels, current_options):
         ]
 
     return updated_options, selected_panels
+
+def create_empty_chart():
+    """
+    Generate an empty Altair chart with specific properties.
+
+    Returns:
+        alt.Chart: An Altair chart object representing an empty chart.
+
+    Example Usage:
+        chart = create_empty_chart()
+        chart.show()  # Display the empty chart
+    """
+    chart = alt.Chart(pd.DataFrame()).mark_point().encode(
+    x=alt.X('empty:Q', axis=None),  
+    y=alt.Y('empty:Q', axis=None),  
+    ).properties(
+    width=500,
+    height=70,
+    title="Solar Energy Potential Across Canadian Regions"
+) 
+
+    return chart.to_dict()
