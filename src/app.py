@@ -18,11 +18,13 @@ server = app.server
 # MAIN APP LAYOUT
 app.layout = dbc.Container([
         dbc.Row([
+                dbc.Col(title), dbc.Col(html.Div(info_button), className="text-right", width="auto", style={'background-color': 'transparent', 
+                                                                                                            'padding-right': '24px', 
+                                                                                                            'padding-top': '12px',
+                                                                                                            'padding-bottom': '12px'})
+                ],style={'background-color':'#FCAE1E'}
+        ),
 
-                dbc.Col(title), dbc.Col(html.Div(info_button), className="text-right", width="auto", style={'background-color': 'transparent'})
-            ], 
-            style={'background-color':'#FCAE1E'}
-            ),
         dbc.Row(
             dbc.Col(info_section, style={"margin-top": "0px"})
         ),
