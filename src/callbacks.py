@@ -9,6 +9,7 @@ from .data import alt_data, price_df, panel_df, gdf_ca
 @callback(
     Output('region_dropdown', 'options'),
     Output('altair-chart', 'spec'),
+    # Output('bars', 'spec'),
     Input('province_dropdown', 'value'),
     Input('region_dropdown', 'value')
 )
@@ -42,7 +43,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
         )
         combined_chart = background + points
 
-        return [], combined_chart.to_dict()
+        return [], combined_chart.to_dict()#, {}
     else:
         filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
       
@@ -83,7 +84,7 @@ def update_region_dropdown(province_dropdown, region_dropdown):
 
 
         combined_chart = background + points
-        return [{'label': region, 'value': region} for region in filtered_regions], combined_chart.to_dict()
+        return [{'label': region, 'value': region} for region in filtered_regions], combined_chart.to_dict()#, {}
 
 @callback(
     Output('ener_card', 'children'),
@@ -138,13 +139,13 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
             card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
             card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
 
-            if panel_comparison and len(panel_comparison) >= 2:
-                comparison_values = [conversion_rate[value] for value in panel_comparison]
-                comparison_savings = []
-                for value in comparison_values:
-                    comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
-                diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
-                card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
+        if panel_comparison and len(panel_comparison) >= 2:
+            comparison_values = [conversion_rate[value] for value in panel_comparison]
+            comparison_savings = []
+            for value in comparison_values:
+                comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
+            diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
+            card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
 
     return card_ener, card_sav, card_cost, card_payback, card_diff
 
@@ -158,6 +159,8 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
 def create_chart(panel_comparison, province, region, num_pan):
     if panel_comparison:
         conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
+    else:
+        return {}
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
@@ -178,6 +181,7 @@ def create_chart(panel_comparison, province, region, num_pan):
                         ).interactive().to_dict()
                 )
     else:
+        
         return {}
     
 def max_rectangles_with_residual(a, b, x, y):
