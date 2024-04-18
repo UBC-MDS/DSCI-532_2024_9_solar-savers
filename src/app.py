@@ -24,6 +24,7 @@ app.layout = dbc.Container([
                                                                                                             'padding-bottom': '12px'})
                 ],style={'background-color':'#FCAE1E'}
         ),
+
         dbc.Row(
             dbc.Col(info_section, style={"margin-top": "0px"})
         ),

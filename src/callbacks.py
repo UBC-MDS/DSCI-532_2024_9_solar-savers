@@ -226,6 +226,7 @@ def calculate_max_panels(roof_width, roof_length, selected_panel_type, current_m
 
         max_fit = max_rectangles_with_residual(roof_width, roof_length, panel_width, panel_length)
 
+
         # Update the slider max only if the new calculation differs from the current max
         if max_fit != current_max:
             return max_fit  # Only return the new max value for the slider

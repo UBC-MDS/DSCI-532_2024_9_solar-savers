@@ -24,7 +24,9 @@ info_button = dbc.Button(
     style={
         'width': '150px',
         'background-color': 'white',
+
         'color': '#FCAE1E'
+
     }
 )
 
@@ -45,6 +47,7 @@ title = html.H1(
         'margin' : '0',
         'padding-left': '10px', 
         'padding-right': '10px'
+
 }
 )
 
