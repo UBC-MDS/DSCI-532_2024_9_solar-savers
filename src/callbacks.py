@@ -8,34 +8,20 @@ from .data import alt_data, price_df, panel_df, gdf_ca
 # Callbacks and Reactivity
 @callback(
     Output('region_dropdown', 'options'),
-    # Output('region-dropdown', 'value'),
+    Output('region_dropdown', 'value'),
     Output('altair-chart', 'spec'),
-    # Output('bars', 'spec'),
-    Input('province_dropdown', 'value'),
-    Input('region_dropdown', 'value')
+    Input('province_dropdown', 'value')
 )
-def update_region_dropdown(province_dropdown, region_dropdown):
-    print(region_dropdown)
+def update_region_dropdown(province_dropdown):
+    region_value = None  
     if province_dropdown is None:
-        return [], get_default_chart()
+        return [], region_value, get_default_chart()
 
     filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
     region_options = [{'label': region, 'value': region} for region in filtered_regions]
-    alt_chart_spec = generate_altair_chart(province_dropdown, region_dropdown)
+    alt_chart_spec = generate_altair_chart(province_dropdown, region_value)
 
-    return region_options, alt_chart_spec
-
-# @callback(
-#     Output("region_dropdown", "value"),
-#     Input("region_dropdown", "options"),
-#     State("region_dropdown", "value"),
-# )
-# def update_value_when_options_change(options, cur_value):
-#     if cur_value is None:
-#         return None
-#     else:
-#         option_values = {i["value"] for i in options}
-#         return [i for i in cur_value if i in option_values]
+    return region_options, region_value, alt_chart_spec
 
 
 @callback(
@@ -53,7 +39,6 @@ def update_region_dropdown(province_dropdown, region_dropdown):
 def update_savings_cards(province, region, efficiency, num_pan, panel_comparison):
     conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     panel_price = {row['name ']: row['price '] for index, row in panel_df.iterrows()}
-    # print(f'{energy_savings} 4') #debugging
 
     card_ener = [
         dbc.CardHeader('Energy Savings'),
@@ -83,31 +68,21 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     if province and region:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
-        # print(f'{energy_savings} 5') #debugging
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
             card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/year')])
             card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/year')])
-            print(f'{energy_savings} 6') #debugging
 
         if efficiency:
-            print(f'{province} 7') #debugging
-            print(f'{region} 7') #debugging
-            print(f'{energy_savings} 7') #debugging
             card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
             card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
-        print(f'{energy_savings} 1') #debugging
         if panel_comparison and len(panel_comparison) >= 2:
-            print(f'{energy_savings} 8') #debugging
             comparison_values = [conversion_rate[value] for value in panel_comparison]
             comparison_savings = []
             for value in comparison_values:
-                print(f'{energy_savings} 2') #debugging
                 comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
             diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
             card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
-            print(f'{energy_savings} 9') #debugging
-        print(f'{energy_savings} 3') #debugging
     return card_ener, card_sav, card_cost, card_payback, card_diff
 
 @callback(
@@ -214,19 +189,13 @@ def toggle_button(n, is_open):
 
 
 
-# @callback(
-#     Output("region_dropdown", "value"),
-#     Input("region_dropdown", "options"),
-#     State("region_dropdown", "value"),
-# )
-# def update_value_when_options_change(options, cur_value):
-#     if cur_value is None:
-#         return None
-#     else:
-#         option_values = {i["value"] for i in options}
-#         return [i for i in cur_value if i in option_values]
-
 def get_default_chart():
+    """
+    Generate a default Altair chart representing solar energy potential across Canadian regions.
+
+    Returns:
+        dict: A dictionary representing the Altair chart specification.
+    """
     background = alt.Chart(gdf_ca).mark_geoshape(
         fill='lightgray',
         stroke='white'
@@ -262,6 +231,16 @@ def get_default_chart():
     return combined_chart.to_dict()
 
 def generate_altair_chart(province_dropdown, region_dropdown):
+    """
+    Generate an Altair chart based on selected province and region.
+
+    Args:
+        province_dropdown (str or None): Selected province name.
+        region_dropdown (str or None): Selected region name.
+
+    Returns:
+        dict: A dictionary representing the Altair chart specification.
+    """
     if province_dropdown is None:
         return get_default_chart()
 
