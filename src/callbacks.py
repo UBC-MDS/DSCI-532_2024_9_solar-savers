@@ -3,6 +3,9 @@ import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
 
+from dash.exceptions import PreventUpdate
+from dash import callback_context
+
 from .data import alt_data, price_df, panel_df, gdf_ca
 
 # Callbacks and Reactivity
@@ -200,7 +203,6 @@ def toggle_button(n, is_open):
     return is_open
 
 
-
 def get_default_chart():
     """
     Generate a default Altair chart representing solar energy potential across Canadian regions.
@@ -297,3 +299,37 @@ def generate_altair_chart(province_dropdown, region_dropdown):
 
     combined_chart = background + points
     return combined_chart.to_dict()
+
+# Callback to disable options in panel_comparison dropdown
+@callback(
+    Output('panel_comparison', 'options'),
+    Output('panel_comparison', 'value'),
+    Input('panel_comparison', 'value'),
+    State('panel_comparison', 'options')
+)
+def toggle_panel_comparison_options(selected_panels, current_options):
+    ctx = callback_context
+    if not ctx.triggered:
+        raise PreventUpdate
+
+    max_panels = 2  
+
+    if not selected_panels:
+        updated_options = [
+            {**option, 'disabled': False}
+            for option in current_options
+        ]
+        return updated_options, []
+
+    if len(selected_panels) >= max_panels:
+        updated_options = [
+            {**option, 'disabled': True} if option['value'] not in selected_panels else option
+            for option in current_options
+        ]
+    else:
+        updated_options = [
+            {**option, 'disabled': False}
+            for option in current_options
+        ]
+
+    return updated_options, selected_panels
