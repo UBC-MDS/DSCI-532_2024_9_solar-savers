@@ -89,9 +89,9 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         if panel_comparison is not None and len(panel_comparison) >= 2:
             comparison_values = [conversion_rate[value] for value in panel_comparison]
             comparison_savings = []
-            print(region) # debug This is a bug by DASH
-            print(panel_comparison) # debug 
-            print(province) # debug
+            # print(region) # debug This is a bug by DASH
+            # print(panel_comparison) # debug 
+            # print(province) # debug
             for value in comparison_values:
                 comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
             diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
@@ -351,7 +351,7 @@ def create_empty_chart():
     ).properties(
     width=500,
     height=70,
-    title="Solar Energy Potential Across Canadian Regions"
+    title="Panel Comparison"
 ) 
 
     return chart.to_dict()
