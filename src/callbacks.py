@@ -10,19 +10,21 @@ from .data import alt_data, price_df, panel_df, gdf_ca
     Output('region_dropdown', 'options'),
     Output('region_dropdown', 'value'),
     Output('altair-chart', 'spec'),
-    Input('province_dropdown', 'value')
+    Input('province_dropdown', 'value'),
+    Input('region_dropdown', 'value')
+
 )
-def update_region_dropdown(province_dropdown):
+def update_region_dropdown(province_dropdown, region_dropdown):
+    print("flag")
     region_value = None  
     if province_dropdown is None:
         return [], region_value, get_default_chart()
 
     filtered_regions = alt_data[alt_data['Province'] == province_dropdown]['Municipality'].unique()
     region_options = [{'label': region, 'value': region} for region in filtered_regions]
-    alt_chart_spec = generate_altair_chart(province_dropdown, region_value)
+    alt_chart_spec = generate_altair_chart(province_dropdown, region_dropdown)
 
-    return region_options, region_value, alt_chart_spec
-
+    return region_options, region_dropdown, alt_chart_spec
 
 @callback(
     Output('ener_card', 'children'),
@@ -65,10 +67,11 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         dbc.CardBody('X year')
     ]
 
+
     if panel_comparison and len(panel_comparison) > 2:
         panel_comparison = panel_comparison[:2]  
 
-    if province and region:
+    if province is not None and region is not None:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
@@ -80,9 +83,12 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
             card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
             card_payback = dbc.Card([dbc.CardHeader('Payback Period'), dbc.CardBody(f'{panel_price.get(efficiency, 0) * num_pan / (energy_savings * province_price):.2f} years')])
 
-        if panel_comparison and len(panel_comparison) >= 2:
+        if panel_comparison is not None and len(panel_comparison) >= 2:
             comparison_values = [conversion_rate[value] for value in panel_comparison]
             comparison_savings = []
+            print(region) # debug This is a bug by DASH
+            print(panel_comparison) # debug 
+            print(province) # debug
             for value in comparison_values:
                 comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
             diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
@@ -102,7 +108,8 @@ def create_chart(panel_comparison, province, region, num_pan):
         conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     else:
         return {}
-    if province and region:
+    
+    if province is not None and region is not None:
         province_price = price_df[(price_df['province'] == province)]["price"].iloc[0] / 100
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
