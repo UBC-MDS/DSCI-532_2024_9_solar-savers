@@ -2,8 +2,6 @@ from dash import callback, Output, Input, State, no_update, html
 import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
-import copy
-
 from dash.exceptions import PreventUpdate
 from dash import callback_context
 
@@ -47,79 +45,25 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     panel_price = {row['name ']: row['price '] for index, row in panel_df.iterrows()}
 
-    # card_ener = copy.deepcopy(ener_sav_card)
-    # card_sav = copy.deepcopy(savings_card)
-    # card_cost = copy.deepcopy(cost_card)
-    # card_payback = copy.deepcopy(payback_card)
-    # card_diff = copy.deepcopy(diff_sav_card)
+    card_ener = dbc.Card(children=[dbc.CardHeader('Energy Savings', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}),
+                        dbc.CardBody([html.H5('XXX kWh/year', style={"color": "steelblue"})],
+                        style={"padding": "10px"})], style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"})
 
-    ## Energy Savings Card
-    card_ener = dbc.Card(
-        children=[
-            dbc.CardHeader('Energy Savings', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}),
-            dbc.CardBody(
-                [
-                    html.H5('XXX kWh/year', style={"color": "steelblue"}),
-                ],
-                style={"padding": "10px"}
-            )
-        ],
-        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
-    )
+    card_sav = dbc.Card(children=[dbc.CardHeader('Financial Savings',  style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+                        dbc.CardBody([html.H5('$XXX /year', style={"color": "steelblue"})], 
+                        style={"padding": "10px"})], style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"})
 
-    ## Savings
-    card_sav = dbc.Card(
-        children=[
-            dbc.CardHeader('Financial Savings',  style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
-            dbc.CardBody(
-                [
-                    html.H5('$XXX /year', style={"color": "steelblue"}),
-                ], 
-                style={"padding": "10px"})
-        ],
-        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
-    )
+    card_cost = dbc.Card(children=[dbc.CardHeader('Panel Costs', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+                        dbc.CardBody([html.H5('$XXX', style={"color": "steelblue"})], 
+                        style={"padding": "10px"})], style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"})
 
-    ## panel cost Card
-    card_cost = dbc.Card(
-        children=[
-                dbc.CardHeader('Panel Costs', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
-                dbc.CardBody(
-                    [
-                    html.H5('$XXX', style={"color": "steelblue"}),
-                    ],
-                    style={"padding": "10px"}
-                    )
-            ], 
-            style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
-    )
+    card_payback = dbc.Card(children=[dbc.CardHeader('Payback Period', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+                        dbc.CardBody([html.H5('X year(s)', style={"color": "steelblue"})],
+                        style={"padding": "10px"})], style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"})
 
-    ## Payback period Card
-    card_payback = dbc.Card(
-        children=[
-                dbc.CardHeader('Payback Period', style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
-                dbc.CardBody(
-                    [
-                    html.H5('X year(s)', style={"color": "steelblue"}),
-                    ],
-                    style={"padding": "10px"}
-                    )
-            ], 
-            style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
-    )
-
-    ## Difference in savings card
-    card_diff = dbc.Card(
-            children=[
-                dbc.CardHeader("Difference in Savings", style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
-                dbc.CardBody([
-                    html.H5("$XXX /yr", style={"color": "steelblue"}),
-                    ],
-                    style={"padding": "10px"}
-                    )
-            ], 
-            style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
-        )
+    card_diff = dbc.Card(children=[dbc.CardHeader("Difference in Savings", style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+                        dbc.CardBody([html.H5("$XXX /yr", style={"color": "steelblue"})], style={"padding": "10px"})],
+                        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"})
 
 
     if panel_comparison and len(panel_comparison) > 2:
