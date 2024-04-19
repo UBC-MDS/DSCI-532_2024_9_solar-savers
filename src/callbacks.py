@@ -2,6 +2,7 @@ from dash import callback, Output, Input, State, no_update, html
 import dash_bootstrap_components as dbc
 import altair as alt
 import pandas as pd
+import functools
 from dash.exceptions import PreventUpdate
 from dash import callback_context
 
@@ -197,7 +198,7 @@ def toggle_button(n, is_open):
         return not is_open
     return is_open
 
-
+@functools.lru_cache()
 def get_default_chart():
     """
     Generate a default Altair chart representing solar energy potential across Canadian regions.
@@ -329,6 +330,7 @@ def toggle_panel_comparison_options(selected_panels, current_options):
 
     return updated_options, selected_panels
 
+@functools.lru_cache()
 def create_empty_chart():
     """
     Generate an empty Altair chart with specific properties.
