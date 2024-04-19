@@ -131,7 +131,7 @@ ener_sav_card = dbc.Card(
             style={"padding": "10px"}
         )
     ],
-    style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+    # style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
 
 ## Savings
@@ -145,7 +145,7 @@ savings_card = dbc.Card(
             ], 
             style={"padding": "10px"})
     ],
-    style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+    # style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
 
 ## panel cost Card
@@ -160,7 +160,7 @@ cost_card = dbc.Card(
                 style={"padding": "10px"}
                 )
         ], 
-        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+        # style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
 
 ## Payback period Card
@@ -175,7 +175,7 @@ payback_card = dbc.Card(
                  style={"padding": "10px"}
                 )
         ], 
-        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+        # style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
 
 ## Difference in savings card
@@ -189,7 +189,7 @@ diff_sav_card = dbc.Card(
                  style={"padding": "10px"}
                  )
         ], 
-        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+        # style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
     )
 
 

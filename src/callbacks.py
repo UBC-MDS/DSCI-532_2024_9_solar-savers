@@ -61,7 +61,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
-            card_ener.children = dbc.CardBody([html.H5(f'{energy_savings:.2f} kWh/year', style={"color": "steelblue"})], style={"padding": "10px"})     
+            card_ener.children[1] = dbc.CardBody([html.H5(f'{energy_savings:.2f} kWh/year', style={"color": "steelblue"})], style={"padding": "10px"})     
             card_sav.children[1] = dbc.CardBody([html.H5(f'${energy_savings * province_price:.2f}/year', style={"color": "steelblue"})], style={"padding": "10px"})     
        
         if efficiency:
