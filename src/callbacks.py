@@ -47,6 +47,12 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     panel_price = {row['name ']: row['price '] for index, row in panel_df.iterrows()}
 
+    del card_ener
+    del card_sav
+    del card_cost 
+    del card_payback 
+    del card_diff
+
     card_ener = copy.deepcopy(ener_sav_card)
     card_sav = copy.deepcopy(savings_card)
     card_cost = copy.deepcopy(cost_card)
