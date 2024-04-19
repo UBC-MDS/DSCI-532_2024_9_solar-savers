@@ -80,9 +80,6 @@ pan_eff_dropdown = dcc.Dropdown(id='panel_efficiency', options=[{'label': name ,
 ## Panel Comparison
 pan_com_dropdown = dcc.Dropdown(id='panel_comparison', options=[{'label': name , 'value': name } for name  in panel_df["name "].unique()], value=None, multi=True)
 
-## Difference in savings card
-diff_sav_card = dbc.Card(id='diff_card', children=[dbc.CardHeader('Difference in Savings'), dbc.CardBody('$XXX /yr')]),
-
 ## Comparison graph
 comparison_graph = dvc.Vega(id='bars', spec={})
 
@@ -181,6 +178,21 @@ payback_card = dbc.Card(
         style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
 )
 
+## Difference in savings card
+diff_sav_card = dbc.Card(
+        id="diff_card",
+        children=[
+            dbc.CardHeader("Difference in Savings", style={"background-color": "steelblue", "color": "white", "font-weight": "bold"}), 
+            dbc.CardBody([
+                html.H5("$XXX /yr", style={"color": "steelblue"}),
+                ],
+                 style={"padding": "10px"}
+                 )
+        ], 
+        style={"box-shadow": "0px 2px 4px rgba(0, 0, 0, 0.1)"}
+    )
+
+
 ## Price information card
 highlight_province = province_dropdown
 
@@ -190,7 +202,7 @@ price_info_card = dash_table.DataTable(price_df.to_dict('records'), [{"name": i,
     style_cell={'fontSize': '12px'},
     )
 
-# optimization fuction 
+# optimization fuction
 roof_width_input = dbc.Row(
     [
         dbc.Col(dbc.Input(id='input-roof-width', type='number', placeholder='Enter width (meters)') ),
