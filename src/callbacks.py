@@ -47,12 +47,6 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
     conversion_rate = {row['name ']: row['efficiency '] for index, row in panel_df.iterrows()}
     panel_price = {row['name ']: row['price '] for index, row in panel_df.iterrows()}
 
-    # card_ener = ener_sav_card
-    # card_sav = savings_card
-    # card_diff = diff_sav_card
-    # card_cost = cost_card
-    # card_payback = payback_card
-
     card_ener = copy.deepcopy(ener_sav_card)
     card_sav = copy.deepcopy(savings_card)
     card_diff = copy.deepcopy(diff_sav_card)
@@ -67,11 +61,8 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
-            # card_ener.children[1] = dbc.CardBody([html.H5(f'{energy_savings:.2f} kWh/year', style={"color": "steelblue"})], style={"padding": "10px"})     
             card_ener.children[1] = dbc.CardBody(f'{energy_savings:.2f} kWh/year')       
-  
-            # card_ener = dbc.Card([dbc.CardHeader('Energy Savings'), dbc.CardBody(f'{energy_savings:.2f} kWh/year')])
-            card_sav = dbc.Card([dbc.CardHeader('Savings'), dbc.CardBody(f'${energy_savings * province_price:.2f}/year')])
+            card_sav.children[1] = dbc.CardBody(f'${energy_savings * province_price:.2f}/year')
 
         if efficiency:
             card_cost = dbc.Card([dbc.CardHeader('Panel Costs'), dbc.CardBody(f'${panel_price.get(efficiency, 0) * num_pan:.0f}')])
@@ -85,8 +76,8 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
             # print(province) # debug
             for value in comparison_values:
                 comparison_savings.append(filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * value * 1.65 * 365 * num_pan)
-            diff = (comparison_savings[0] - comparison_savings[1]) * province_price  
-            card_diff = dbc.Card([dbc.CardHeader('Difference in Savings'), dbc.CardBody(f'${diff:.2f}/yr'), dbc.CardFooter(f'{panel_comparison[0]} vs. {panel_comparison[1]}')])
+            diff = (abs(comparison_savings[0] - comparison_savings[1])) * province_price  
+            card_diff.children[1] = dbc.CardBody(f'${diff:.2f}/yr')
 
     return card_ener, card_sav, card_cost, card_payback, card_diff
 
