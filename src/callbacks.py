@@ -49,9 +49,9 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
 
     card_ener = copy.deepcopy(ener_sav_card)
     card_sav = copy.deepcopy(savings_card)
-    card_diff = copy.deepcopy(diff_sav_card)
     card_cost = copy.deepcopy(cost_card)
     card_payback = copy.deepcopy(payback_card)
+    card_diff = copy.deepcopy(diff_sav_card)
 
     if panel_comparison and len(panel_comparison) > 2:
         panel_comparison = panel_comparison[:2]  
@@ -61,7 +61,7 @@ def update_savings_cards(province, region, efficiency, num_pan, panel_comparison
         filtered_row = alt_data[(alt_data['Province'] == province) & (alt_data['Municipality'] == region) & (alt_data['Month'] == 'Annual')]
         if not filtered_row.empty:
             energy_savings = filtered_row['South-facing with vertical (90 degrees) tilt'].iloc[0] * conversion_rate.get(efficiency, 0) * 1.65 * 365 * num_pan
-            card_ener.children[1] = dbc.CardBody([html.H5(f'{energy_savings:.2f} kWh/year', style={"color": "steelblue"})], style={"padding": "10px"})     
+            card_ener.children = dbc.CardBody([html.H5(f'{energy_savings:.2f} kWh/year', style={"color": "steelblue"})], style={"padding": "10px"})     
             card_sav.children[1] = dbc.CardBody([html.H5(f'${energy_savings * province_price:.2f}/year', style={"color": "steelblue"})], style={"padding": "10px"})     
        
         if efficiency:
