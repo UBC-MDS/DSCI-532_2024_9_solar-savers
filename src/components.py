@@ -38,7 +38,7 @@ info_section = dbc.Collapse(
 
 # Title
 title = html.H1(
-    ' 𖤓 Solar Savers',
+    ' Solar Savers',
     style={
         'backgroundColor': '#FCAE1E',
         'color': 'white',
