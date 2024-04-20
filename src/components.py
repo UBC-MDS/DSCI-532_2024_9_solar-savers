@@ -18,15 +18,14 @@ app_info = [
 ]
 
 info_button = dbc.Button(
-    "Click here!",
+    "Learn More!",
     id="info-button",
     outline=False,
     style={
         'width': '150px',
-        'background-color': 'white',
-
-        'color': '#FCAE1E'
-
+        'background-color': 'steelblue',
+        "font-weight": "bold",
+        'color': 'white'
     }
 )
 
@@ -91,8 +90,8 @@ stroke='white'
     type='transverseMercator',
     rotate=[90, 0, 0]
 ).properties(
-    width=500,
-    height=400, 
+    width=700,
+    height=500, 
     title = "Solar Energy Potential Across Canadian Regions"
 )
 

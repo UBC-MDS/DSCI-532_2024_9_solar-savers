@@ -11,7 +11,7 @@ from .components import (
 )
 
 # Initiatlizion
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Solar Savers")
 server = app.server
 
 
@@ -31,7 +31,7 @@ app.layout = dbc.Container([
         dbc.Row(
             [
                 dbc.Col(sidebar, md=4),
-                dbc.Col(altair_chart, md=8)
+                dbc.Col(altair_chart, md=8, style={"padding-top": "20px", "padding-bottom": "20px", "padding-left": "20px", "padding-right": "30px"})
             ],
         ), 
         bottombar
