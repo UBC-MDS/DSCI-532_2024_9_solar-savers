@@ -17,13 +17,15 @@ With this escalating inflation and growing environmental consciousness, consumer
 
 To start using the Solar Savers dashboard, click here: [Solar Savers Dashboard](https://dsci-532-2024-9-solar-savers.onrender.com/). 
 
-On the dashboard, embark on your journey by selecting your location, desired number of panels, and panel efficiency. Use the Panel Comparison widget if you'd like to compare panels of different quality. Get started and watch in awe as your electricity and financial savings rise!
+On the dashboard, embark on your journey by selecting your location, roof dimensions (optional), desired number of panels, and panel efficiency. Can't decide between two panels? Let our panel comparison widget at the bottom guide your decision.
+
+Get started and watch in awe as your electricity and financial savings rise!
 
 ![Demo](img/demo.gif)
 
 #### 🌱 Get involved!
 
-If you are interested in contributing to the development of the Solar Savers dashboard, please read the [contributing guidelines](CONTRIBUTING.md) for full details. Below are some quick steps to get started. 
+If you are interested in contributing to the development of the Solar Savers dashboard, please read the [contributing guidelines](CONTRIBUTING.md) for full details. Below are some quick steps to run the dashboard locally. 
 
 1. Clone the repository locally. In your terminal run:
 
@@ -46,14 +48,12 @@ If you are interested in contributing to the development of the Solar Savers das
     $ git checkout -b name-of-your-fix-or-feature
     ```
 
-4. To run the dashboard. Navigate to `DSCI-532_2024_9_solar-savers/` then run `python -m src.app`: 
+4. To run the dashboard, from the root of the directory (`DSCI-532_2024_9_solar-savers`) run: 
 
-    ```console
-    $ cd DSCI-532_2024_9_solar-savers/
-    ```
     ```console
     $ python -m src.app
     ```
+5. Click on the displayed link to open view the dashboard on a browser.
 
 ## Contributing
 
@@ -74,6 +74,6 @@ Solar Savers is developed and maintained by Marco Bravo, Nicole Bidwell, Rafe Ch
 
 #### 📈 Data Sources 
 
-- [Photovoltaic Potential and Solar Resource Maps of Canada](https://open.canada.ca/data/en/dataset/8b434ac7-aedb-4698-90df-ba77424a551f/resource/b4b8ede1-512c-4e6f-92af-d0ff38cf4de5) - primary data source used to extract the average daily global insolation across different regions in Canada.  
-- [Electricity Prices in Canada 2023](https://www.energyhub.org/electricity-prices/#) - primary data source to extract the price of electricity of every province in Canada.
-- [VOLTS Solar Panels](https://volts.ca/collections/solar-panels) - primary data source to extract the price, size, and efficiency of different solar panel models.
+- [Photovoltaic Potential and Solar Resource Maps of Canada](https://open.canada.ca/data/en/dataset/8b434ac7-aedb-4698-90df-ba77424a551f/resource/b4b8ede1-512c-4e6f-92af-d0ff38cf4de5) - data source used to extract the average daily global insolation across different regions in Canada.  
+- [Electricity Prices in Canada 2023](https://www.energyhub.org/electricity-prices/#) - data source to extract the price of electricity of every province and territory in Canada.
+- [VOLTS Solar Panels](https://volts.ca/collections/solar-panels) - data source to extract the price, size, and efficiency of different solar panel models.
