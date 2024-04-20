@@ -161,7 +161,7 @@ def max_rectangles_with_residual(a, b, x, y):
     
 @callback(
     [
-        Output('num_pan_slider', 'max'),  # updat slider max property
+        Output('num_pan_slider', 'max'),  # update slider max property
         Output('num_pan_slider', 'marks'), # update marks 
         Output('num_pan_slider', 'tooltip')  # Update tooltip 
     ],
@@ -184,13 +184,13 @@ def calculate_max_panels(roof_width, roof_length, selected_panel_type, current_m
 
         # Update the slider max only if the new calculation differs from the current max
         if max_fit != current_max:
-            new_marks = {0: '0', max_fit: str(max_fit)}
-            new_tooltip = {'always_visible': True, 'placement': 'top', 'max_value': str(max_fit)}
+            new_marks = {0: '0', int(max_fit): str(int(max_fit))}
+            new_tooltip = {'always_visible': True, 'placement': 'top', 'max_value': str(int(max_fit))}
             return max_fit, new_marks, new_tooltip  
-        return no_update, {0: '0', current_max: str(current_max)}, new_tooltip  
+        # return no_update, {0: '0', current_max: str(current_max)}, new_tooltip  
 
     # Return the initial slider max if inputs are not valid
-    return current_max, {0: '0', current_max: str(current_max)}, {'always_visible': True, 'placement': 'top', 'max_value': str(current_max)}  
+    return int(current_max), {0: '0', int(current_max): str(int(current_max))}, {'always_visible': True, 'placement': 'top', 'max_value': str(int(current_max))}  
  
 # Dropdown button for information
 @callback(
