@@ -14,7 +14,10 @@ app_info = [
     html.P(
         "Begin your journey by selecting your province or territory, then specify your region. Optionally, input your roof dimensions to calculate the maximum number of solar panels for your home. Select a panel type, then see your energy and financial savings soar!", style={'font-size': '16px'}
     ), 
-    html.P("Explore the map to visualize the amount of insolation (solar energy received per square meter of land) and electricity costs in different regions. Can't decide between two panels? Let our panel comparison widget at the bottom guide your decision!", style={'font-size': '16px'})
+    html.P("Explore the map to visualize the amount of insolation (solar energy received per square meter of land) and electricity costs in different regions. Can't decide between two panels? Let our panel comparison widget at the bottom guide your decision!", style={'font-size': '16px'}), 
+    html.Br(), 
+    html.A('Source Code on GitHub.', href='https://github.com/UBC-MDS/DSCI-532_2024_9_solar-savers', style={'font-size': '14px', 'margin-bottom': '10px'}),
+    html.P('Last updated on April 20, 2024.', style={'font-size': '12px', 'margin-bottom': '10px'}),   
 ]
 
 info_button = dbc.Button(
