@@ -18,15 +18,14 @@ app_info = [
 ]
 
 info_button = dbc.Button(
-    "Click here!",
+    "Learn More!",
     id="info-button",
     outline=False,
     style={
         'width': '150px',
-        'background-color': 'white',
-
-        'color': '#FCAE1E'
-
+        'background-color': 'steelblue',
+        "font-weight": "bold",
+        'color': 'white'
     }
 )
 
@@ -39,7 +38,7 @@ info_section = dbc.Collapse(
 
 # Title
 title = html.H1(
-    ' Solar Savers',
+    'Solar Savers',
     style={
         'backgroundColor': '#FCAE1E',
         'color': 'white',

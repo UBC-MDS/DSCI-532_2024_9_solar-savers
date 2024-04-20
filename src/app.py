@@ -11,7 +11,7 @@ from .components import (
 )
 
 # Initiatlizion
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title="Solar Savers")
 server = app.server
 
 
