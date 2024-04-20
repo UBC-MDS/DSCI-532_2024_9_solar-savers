@@ -90,8 +90,8 @@ stroke='white'
     type='transverseMercator',
     rotate=[90, 0, 0]
 ).properties(
-    width=500,
-    height=400, 
+    width=700,
+    height=500, 
     title = "Solar Energy Potential Across Canadian Regions"
 )
 
